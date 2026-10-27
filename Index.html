@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chinni AI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #101827;
+      color: white;
+      text-align: center;
+      padding: 25px 12px;
+    }
+    .chat {
+      max-width: 420px;
+      margin: auto;
+      background: #202d42;
+      padding: 20px;
+      border-radius: 20px;
+    }
+    #messages {
+      min-height: 180px;
+      text-align: left;
+      line-height: 1.6;
+    }
+    input, button {
+      padding: 12px;
+      border-radius: 10px;
+      border: 0;
+      margin: 4px;
+    }
+    input { width: 60%; }
+    button {
+      background: #5b8cff;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat">
+    <h1>🤖 Chinni AI</h1>
+    <p>Your friendly AI companion ❤️</p>
+    <div id="messages">
+      <p>Chinni: Hi Arjun! Ela unnav? 😊</p>
+    </div>
+    <input id="msg" placeholder="Message Chinni...">
+    <button onclick="sendMsg()">Send</button>
+  </div>
+
+  <script>
+    function sendMsg() {
+      const input = document.getElementById("msg");
+      const messages = document.getElementById("messages");
+      const text = input.value.trim();
+
+      if (!text) return;
+
+      const user = document.createElement("p");
+      user.textContent = "You: " + text;
+      messages.appendChild(user);
+
+      const reply = document.createElement("p");
+      reply.textContent =
+        "Chinni: Nee message naaku vachindi! ❤️";
+      messages.appendChild(reply);
+
+      input.value = "";
+    }
+  </script>
+</body>
+  </html>
