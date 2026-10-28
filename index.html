@@ -3,430 +3,1197 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#091326">
-<title>Chinni AI | Your AI Companion</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050914">
+<title>Chinni AI — Beyond Imagination</title>
 
 <style>
 :root {
-  --bg: #091326;
-  --panel: #101e36;
-  --blue: #4285ff;
-  --cyan: #78e5ff;
-  --text: #f5f8ff;
-  --muted: #a6b8d5;
-  --border: #263c5d;
+  --bg: #050914;
+  --blue: #69d9ff;
+  --cyan: #9af3ff;
+  --purple: #8d7bff;
+  --muted: #8e9bb7;
+  --glass: rgba(12, 24, 49, .65);
+  --line: rgba(133, 208, 255, .17);
 }
 * { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
   margin: 0;
   min-height: 100vh;
-  min-height: 100dvh;
-  color: var(--text);
-  font-family: Inter, system-ui, Arial, sans-serif;
-  background:
-    radial-gradient(ellipse at 50% 0%, #1b3a69 0%, transparent 55%),
-    var(--bg);
+  color: #f3f8ff;
+  background: var(--bg);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  overflow-x: hidden;
 }
-button, input { font: inherit; }
-button { cursor: pointer; }
-.hidden { display: none !important; }
+button, input, textarea { font: inherit; }
+button { color: inherit; }
+button:focus-visible, input:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 4px;
+}
+button:disabled { opacity: .5; cursor: not-allowed; }
 
+#universe {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 40%, #142953 0%, #091326 36%, #050914 74%);
+}
+#stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.nebula {
+  position: absolute;
+  width: 65vw;
+  height: 65vw;
+  min-width: 380px;
+  min-height: 380px;
+  border-radius: 50%;
+  filter: blur(85px);
+  opacity: .18;
+  pointer-events: none;
+  animation: nebulaFloat 14s ease-in-out infinite alternate;
+}
+.nebula.one { background: #175bcb; top: -25%; left: -25%; }
+.nebula.two {
+  background: #7043ff;
+  bottom: -40%;
+  right: -22%;
+  animation-delay: -6s;
+}
+.scanlines {
+  position: absolute;
+  inset: 0;
+  opacity: .12;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom, transparent 0px, transparent 3px,
+    rgba(150, 205, 255, .07) 4px
+  );
+}
+@keyframes nebulaFloat {
+  from { transform: translate3d(-2%, -1%, 0) scale(.95); }
+  to { transform: translate3d(5%, 4%, 0) scale(1.12); }
+}
+
+/* Shared navigation */
 .topbar {
   position: absolute;
-  top: 0; left: 0; right: 0;
-  padding: 20px 6%;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  min-height: 78px;
+  padding: 18px clamp(18px, 5vw, 72px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border-bottom: 1px solid rgba(164, 210, 255, .08);
+  background: linear-gradient(180deg, rgba(3, 8, 20, .62), transparent);
+}
+.brand {
   display: flex;
   align-items: center;
   gap: 12px;
+  letter-spacing: .02em;
 }
-.brand-logo {
-  width: 48px; height: 48px;
-  flex-shrink: 0;
-  border-radius: 15px;
-  display: grid; place-items: center;
-  background: linear-gradient(145deg,#234d82,#142641);
-  border: 1px solid #4773a5;
-  box-shadow: 0 0 28px #4285ff22;
+.brand-mark {
+  width: 39px;
+  height: 39px;
+  border: 1px solid rgba(126, 220, 255, .65);
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, rgba(75, 183, 255, .22), rgba(102, 74, 255, .15));
+  box-shadow: 0 0 24px rgba(55, 166, 255, .17), inset 0 0 14px rgba(112, 204, 255, .13);
 }
-.brand-logo svg { width: 42px; height: 42px; }
-.brand-name {
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  font-size: 19px;
+.brand-mark svg { width: 25px; height: 25px; }
+.brand-name { font-size: 17px; font-weight: 750; }
+.brand-name span { color: var(--blue); }
+.top-status {
+  color: #a7c4df;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 9px;
 }
-.brand-sub { color: var(--muted); font-size: 12px; margin-top: 3px; }
+.status-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #73f5ca;
+  box-shadow: 0 0 12px #73f5ca;
+}
 
+/* Screens */
 .screen {
-  min-height: 100vh;
-  min-height: 100dvh;
+  position: relative;
+  min-height: 100svh;
+  width: 100%;
+  transition: opacity .7s ease, transform .7s cubic-bezier(.2,.75,.2,1), filter .7s;
+}
+.screen.hidden {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(18px) scale(.985);
+}
+#intro {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
+  overflow: hidden;
 }
 .hero {
-  width: 100%;
-  max-width: 620px;
-  text-align: center;
-  padding-top: 65px;
-  animation: appear .65s ease both;
+  width: min(1160px, 100%);
+  flex: 1;
+  margin: 0 auto;
+  padding: 105px 26px 42px;
+  display: grid;
+  grid-template-columns: 1.03fr .97fr;
+  align-items: center;
+  gap: 10px;
 }
-.avatar-frame {
-  width: 190px;
-  height: 190px;
-  margin: 0 auto 30px;
-  padding: 5px;
-  border-radius: 50%;
-  background: linear-gradient(145deg,#7deaff,#4385ff,#6c5cff);
-  box-shadow: 0 0 65px #4285ff38;
-}
-.avatar {
-  width: 100%;
-  height: 100%;
-  display: block;
-  border-radius: 50%;
-  background: #142844;
+.hero-copy {
+  position: relative;
+  z-index: 2;
+  padding: 28px 0;
+  animation: riseIn 1.1s .15s both;
 }
 .eyebrow {
-  color: var(--cyan);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 13px;
+  border: 1px solid rgba(115, 203, 255, .28);
+  border-radius: 100px;
+  color: #b8d9f5;
+  background: rgba(20, 46, 80, .3);
+  font-size: 10px;
+  letter-spacing: .19em;
   text-transform: uppercase;
 }
+.eyebrow .mini-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 10px var(--blue);
+}
 h1 {
-  font-size: clamp(40px,8vw,64px);
-  letter-spacing: -2px;
-  line-height: 1.08;
-  margin: 16px 0;
+  margin: 27px 0 18px;
+  max-width: 620px;
+  font-size: clamp(47px, 6.3vw, 86px);
+  line-height: .99;
+  letter-spacing: -.065em;
+  font-weight: 760;
 }
-.gradient-text {
-  background: linear-gradient(90deg,#80eaff,#83aaff);
-  -webkit-background-clip: text;
-  background-clip: text;
+h1 .gradient {
+  display: block;
   color: transparent;
+  background: linear-gradient(100deg, #eafaff 2%, #7ddcff 42%, #9d8bff 92%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  filter: drop-shadow(0 0 28px rgba(87, 185, 255, .15));
 }
-.description {
+.hero-description {
   max-width: 430px;
+  margin: 0;
+  color: #a4b5ce;
+  font-size: 15px;
+  line-height: 1.9;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 19px;
+  margin-top: 30px;
+}
+.start-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  min-height: 56px;
+  padding: 0 25px;
+  border: 1px solid rgba(206, 247, 255, .6);
+  border-radius: 14px;
+  cursor: pointer;
+  color: #03111f;
+  background: linear-gradient(115deg, #b7f3ff, #68caff 48%, #a4a0ff);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: .015em;
+  box-shadow: 0 0 28px rgba(70, 176, 255, .23), inset 0 1px rgba(255,255,255,.8);
+  transition: transform .25s, box-shadow .25s, filter .25s;
+  overflow: hidden;
+}
+.start-btn::before {
+  content: "";
+  position: absolute;
+  top: -70%; bottom: -70%; left: -45%;
+  width: 25%;
+  transform: rotate(20deg);
+  background: rgba(255,255,255,.7);
+  filter: blur(8px);
+  transition: left .65s ease;
+}
+.start-btn:hover { transform: translateY(-3px); box-shadow: 0 0 42px rgba(70, 176, 255, .42); filter: brightness(1.06); }
+.start-btn:hover::before { left: 130%; }
+.start-btn svg { width: 17px; height: 17px; }
+.small-note { color: #6f819e; font-size: 11px; letter-spacing: .04em; }
+
+/* Original SVG-inspired AI portrait */
+.hero-art {
+  position: relative;
+  min-width: 0;
+  height: min(640px, 73vh);
+  min-height: 420px;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  animation: portraitReveal 1.5s .2s both;
+}
+.art-glow {
+  position: absolute;
+  z-index: -1;
+  width: 72%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(58, 167, 255, .32), rgba(84, 80, 255, .12) 40%, transparent 70%);
+  filter: blur(15px);
+  animation: breathe 5s ease-in-out infinite;
+}
+.art-ring {
+  position: absolute;
+  width: min(94%, 510px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid rgba(117, 205, 255, .19);
+  box-shadow: inset 0 0 30px rgba(65, 153, 255, .04), 0 0 25px rgba(57, 131, 255, .05);
+  transform: rotateX(64deg) rotateZ(-18deg);
+  animation: ringSpin 24s linear infinite;
+}
+.art-ring::before, .art-ring::after {
+  content: "";
+  position: absolute;
+  inset: 9%;
+  border: 1px dashed rgba(141, 161, 255, .23);
+  border-radius: 50%;
+}
+.art-ring::after { inset: -9%; border-style: solid; opacity: .45; }
+.ring-orbit {
+  position: absolute;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  top: 12%; left: 20%;
+  background: #b4f4ff;
+  box-shadow: 0 0 20px 5px #5dc8ff;
+}
+.portrait {
+  position: relative;
+  width: min(100%, 490px);
+  height: 100%;
+  max-height: 620px;
+  filter: drop-shadow(0 25px 60px rgba(0, 0, 0, .28));
+  overflow: visible;
+  z-index: 1;
+}
+.portrait .hair-back { transform-origin: 250px 240px; animation: hairDrift 6s ease-in-out infinite; }
+.portrait .floating { animation: float 5s ease-in-out infinite; }
+.portrait .eye-glow { animation: eyePulse 3.5s ease-in-out infinite; }
+.portrait .sparkle { animation: sparkle 2.7s ease-in-out infinite; }
+.portrait .sparkle:nth-of-type(2) { animation-delay: .8s; }
+.portrait .sparkle:nth-of-type(3) { animation-delay: 1.4s; }
+.art-caption {
+  position: absolute;
+  z-index: 3;
+  bottom: 5%;
+  right: 1%;
+  padding: 12px 15px;
+  border: 1px solid rgba(129, 212, 255, .2);
+  border-radius: 12px;
+  background: rgba(4, 14, 32, .72);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 12px 40px rgba(0,0,0,.18);
+  animation: riseIn 1s .9s both;
+}
+.art-caption small { display: block; color: #7d9cbd; font-size: 9px; letter-spacing: .18em; }
+.art-caption strong { display: block; margin-top: 5px; font-size: 12px; letter-spacing: .04em; }
+.art-caption strong span { color: #78e5ff; }
+
+.hero-footer {
+  width: min(1160px, 100%);
   margin: 0 auto;
-  color: var(--muted);
-  font-size: 16px;
-  line-height: 1.8;
+  padding: 18px 26px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  color: #536782;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
 }
-.primary {
-  min-height: 54px;
-  margin-top: 28px;
-  padding: 0 28px;
-  border: 1px solid #79a7ff;
-  border-radius: 15px;
-  color: white;
-  font-weight: 750;
-  background: linear-gradient(110deg,#347ff0,#586cf5);
-  box-shadow: 0 12px 36px #347ff038;
-  transition: transform .2s, filter .2s;
+.footer-right { display: flex; align-items: center; gap: 8px; }
+.footer-line { width: 34px; height: 1px; background: #47617f; }
+
+/* Chat screen */
+#chatScreen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  padding-top: 79px;
 }
-.primary:hover { transform: translateY(-2px); filter: brightness(1.12); }
-.features {
+.chat-layout {
+  width: min(1050px, 100%);
+  margin: 0 auto;
+  padding: 28px 22px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  animation: riseIn .65s both;
+}
+.chat-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 0 20px;
+  border-bottom: 1px solid var(--line);
+}
+.assistant-id { display: flex; align-items: center; gap: 13px; }
+.avatar-mini {
+  position: relative;
+  width: 48px; height: 48px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(112, 214, 255, .45);
+  border-radius: 16px;
+  display: grid; place-items: center;
+  background: radial-gradient(circle at 50% 30%, #315d91, #121b3b 72%);
+  box-shadow: 0 0 25px rgba(63, 157, 255, .15);
+}
+.avatar-mini svg { width: 35px; height: 35px; }
+.assistant-name { font-weight: 750; font-size: 15px; }
+.assistant-sub { margin-top: 5px; color: #91a6c3; font-size: 11px; }
+.live-tag {
+  display: flex; align-items: center; gap: 7px;
+  border: 1px solid rgba(111, 244, 196, .18);
+  border-radius: 100px;
+  padding: 8px 11px;
+  color: #8feac9;
+  background: rgba(64, 197, 146, .06);
+  font-size: 10px;
+}
+.chat-messages {
+  flex: 1;
+  min-height: 240px;
+  max-height: calc(100svh - 290px);
+  overflow-y: auto;
+  padding: 24px 4px 25px;
+  scrollbar-width: thin;
+  scrollbar-color: #29496a transparent;
+}
+.chat-messages::-webkit-scrollbar { width: 5px; }
+.chat-messages::-webkit-scrollbar-thumb { background: #29496a; border-radius: 8px; }
+.welcome-message {
+  max-width: 620px;
+  margin: 4px auto 25px;
+  padding: 23px;
+  border: 1px solid rgba(119, 194, 255, .16);
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(24, 51, 88, .47), rgba(11, 20, 43, .6));
+  box-shadow: 0 20px 60px rgba(0,0,0,.1);
+  text-align: center;
+}
+.welcome-symbol {
+  width: 62px; height: 62px;
+  display: grid; place-items: center;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(109, 208, 255, .22), rgba(92, 83, 255, .08) 65%, transparent);
+  border: 1px solid rgba(131, 218, 255, .2);
+}
+.welcome-symbol svg { width: 39px; height: 39px; }
+.welcome-message h2 { margin: 0 0 9px; font-size: 22px; letter-spacing: -.025em; }
+.welcome-message p { margin: 0; color: #9dafca; font-size: 13px; line-height: 1.7; }
+.suggestions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 9px;
-  margin-top: 32px;
+  margin-top: 20px;
 }
-.feature {
-  border: 1px solid var(--border);
-  background: #101e36b8;
-  color: #c4d4eb;
-  border-radius: 30px;
+.suggestion {
   padding: 10px 13px;
-  font-size: 12px;
-}
-.footer-note { color: #7187a8; font-size: 12px; margin-top: 22px; }
-
-/* Chat screen */
-.chat-screen { padding: 0; justify-content: flex-start; }
-.chat-top {
-  position: sticky;
-  top: 0;
-  z-index: 3;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 5%;
-  border-bottom: 1px solid var(--border);
-  background: #091326ed;
-  backdrop-filter: blur(14px);
-}
-.chat-heading { font-weight: 750; }
-.status { font-size: 12px; color: #7cdec4; margin-top: 4px; }
-.back {
-  margin-left: auto;
-  padding: 10px 13px;
-  color: #d5e4f8;
-  background: #15243d;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(134, 194, 245, .19);
   border-radius: 12px;
+  background: rgba(16, 34, 62, .62);
+  color: #c8def4;
+  font-size: 11px;
+  cursor: pointer;
+  transition: .2s;
 }
-.chat-body {
-  width: 100%;
-  max-width: 760px;
-  margin: 0 auto;
-  flex: 1;
-  padding: 25px 18px 145px;
-}
-.chat-intro { text-align: center; padding: 22px 0; }
-.chat-intro .avatar-frame {
-  width: 100px; height: 100px; margin-bottom: 18px;
-}
-.chat-intro h2 { font-size: 26px; margin: 12px 0; }
-.chat-intro p { color: var(--muted); line-height: 1.7; }
-#messages { display: flex; flex-direction: column; gap: 13px; }
-.message {
-  max-width: 88%;
-  padding: 13px 16px;
-  border-radius: 17px;
-  line-height: 1.65;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-.bot-message {
-  align-self: flex-start;
-  background: #14243e;
-  border: 1px solid #293f60;
-  border-bottom-left-radius: 5px;
-}
-.user-message {
-  align-self: flex-end;
-  background: linear-gradient(130deg,#286bd2,#505ee4);
-  border-bottom-right-radius: 5px;
-}
-.composer-wrap {
-  position: fixed;
-  z-index: 2;
-  bottom: 0; left: 0; right: 0;
-  padding: 15px 18px calc(15px + env(safe-area-inset-bottom));
-  background: linear-gradient(transparent,#091326 22%);
-}
-.composer {
+.suggestion:hover { border-color: rgba(120, 216, 255, .65); background: rgba(46, 90, 137, .4); transform: translateY(-2px); }
+.message-row {
   display: flex;
-  gap: 9px;
-  max-width: 720px;
-  margin: 0 auto;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 15px 0;
+  animation: messageIn .28s ease-out both;
+}
+.message-row.user { flex-direction: row-reverse; }
+.message-avatar {
+  width: 31px; height: 31px; flex: 0 0 auto;
+  border-radius: 11px;
+  display: grid; place-items: center;
+  border: 1px solid rgba(123, 204, 255, .22);
+  background: #122440;
+  color: #9ce9ff;
+  font-size: 11px;
+  font-weight: 800;
+}
+.message-row.user .message-avatar {
+  border-color: rgba(164, 150, 255, .3);
+  background: #25234b;
+  color: #d2c9ff;
+}
+.message-bubble {
+  max-width: min(78%, 650px);
+  padding: 12px 15px;
+  border: 1px solid rgba(124, 181, 231, .14);
+  border-radius: 5px 16px 16px 16px;
+  background: rgba(18, 35, 62, .78);
+  color: #dce9f8;
+  font-size: 13px;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.message-row.user .message-bubble {
+  border-color: rgba(145, 134, 255, .2);
+  border-radius: 16px 5px 16px 16px;
+  background: linear-gradient(125deg, rgba(47, 64, 124, .78), rgba(51, 42, 103, .8));
+}
+.message-time { margin-top: 6px; color: #637b99; font-size: 9px; }
+.message-row.user .message-time { text-align: right; }
+.typing-dots { display: flex; gap: 5px; padding: 5px 2px; }
+.typing-dots span {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #7ddcff;
+  animation: dotBounce .8s ease-in-out infinite alternate;
+}
+.typing-dots span:nth-child(2) { animation-delay: .15s; }
+.typing-dots span:nth-child(3) { animation-delay: .3s; }
+.composer-wrap {
+  border: 1px solid rgba(121, 195, 255, .22);
+  border-radius: 18px;
   padding: 8px;
-  background: #111e35;
-  border: 1px solid #304969;
-  border-radius: 17px;
+  background: rgba(6, 16, 34, .85);
+  box-shadow: 0 14px 45px rgba(0,0,0,.19), inset 0 1px rgba(255,255,255,.025);
+  backdrop-filter: blur(16px);
 }
-.composer input {
-  min-width: 0; flex: 1;
-  padding: 10px;
-  color: white;
+.composer { display: flex; align-items: flex-end; gap: 9px; }
+#messageInput {
+  flex: 1;
+  min-width: 0;
+  max-height: 130px;
+  resize: none;
+  border: 0;
+  outline: 0;
   background: transparent;
-  border: none; outline: none;
-  font-size: 16px;
+  color: #edf7ff;
+  padding: 13px 10px;
+  line-height: 1.5;
+  font-size: 13px;
 }
-.composer input::placeholder { color: #8398b7; }
-.send {
+#messageInput::placeholder { color: #647a98; }
+.send-btn {
   width: 45px; height: 45px;
-  border: 0; border-radius: 12px;
-  color: white; background: var(--blue);
-  font-size: 22px;
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 13px;
+  display: grid; place-items: center;
+  cursor: pointer;
+  color: #061221;
+  background: linear-gradient(135deg, #b1f1ff, #6acbff 60%, #9a93ff);
+  box-shadow: 0 0 20px rgba(82, 177, 255, .14);
+  transition: transform .2s, filter .2s;
 }
-.note { text-align: center; color: #7488a5; font-size: 10px; margin-top: 9px; }
+.send-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+.send-btn svg { width: 20px; height: 20px; }
+.composer-bottom {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px;
+  padding: 6px 10px 3px;
+  color: #627894;
+  font-size: 10px;
+}
+.composer-bottom strong { color: #8ba8c8; font-weight: 500; }
+.chat-footer {
+  padding: 15px 12px 0;
+  text-align: center;
+  color: #506581;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.chat-footer b { color: #7b9cbe; font-weight: 500; }
 
-@keyframes appear {
-  from { opacity: 0; transform: translateY(12px); }
+/* Animations */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(22px); }
   to { opacity: 1; transform: translateY(0); }
 }
-@media (max-width: 480px) {
-  .topbar { padding: 16px 20px; }
-  .hero { padding-top: 62px; }
-  .avatar-frame { width: 158px; height: 158px; }
-  .description { font-size: 14px; }
-  .features { gap: 7px; margin-top: 25px; }
-  .feature { padding: 9px 11px; }
-  .chat-body { padding: 12px 14px 140px; }
-  .message { max-width: 94%; }
+@keyframes portraitReveal {
+  from { opacity: 0; transform: translateY(20px) scale(.96); filter: blur(7px); }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+@keyframes ringSpin { to { transform: rotateX(64deg) rotateZ(342deg); } }
+@keyframes breathe { 0%,100% { opacity: .75; transform: scale(.94); } 50% { opacity: 1; transform: scale(1.08); } }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes hairDrift { 0%,100% { transform: rotate(0); } 50% { transform: rotate(.7deg); } }
+@keyframes eyePulse { 0%,100% { opacity: .7; } 50% { opacity: 1; } }
+@keyframes sparkle { 0%,100% { opacity: .2; transform: scale(.7); } 50% { opacity: 1; transform: scale(1.2); } }
+@keyframes messageIn { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes dotBounce { to { transform: translateY(-4px); opacity: .45; } }
+
+@media (min-width: 1300px) {
+  .hero { width: min(1250px, 100%); }
+}
+@media (max-width: 760px) {
+  .topbar { min-height: 68px; padding: 14px 18px; }
+  .brand-mark { width: 35px; height: 35px; }
+  .brand-name { font-size: 15px; }
+  .top-status { font-size: 8px; letter-spacing: .1em; }
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 90px 23px 18px;
+    text-align: center;
+  }
+  .hero-copy { padding: 22px 0 0; }
+  .eyebrow { font-size: 9px; }
+  h1 { margin: 23px auto 15px; font-size: clamp(47px, 12vw, 74px); }
+  .hero-description { margin: 0 auto; max-width: 440px; font-size: 13px; }
+  .hero-actions { justify-content: center; margin-top: 23px; gap: 13px; }
+  .start-btn { min-height: 53px; padding: 0 22px; }
+  .small-note { width: 100%; }
+  .hero-art { height: 390px; min-height: 0; margin-top: -3px; }
+  .portrait { width: min(100%, 370px); max-height: 410px; }
+  .art-ring { width: min(94%, 360px); }
+  .art-caption { right: 1%; bottom: 3%; }
+  .hero-footer { padding: 15px 20px 19px; font-size: 8px; }
+  .footer-line { width: 18px; }
+  #chatScreen { padding-top: 68px; }
+  .chat-layout { padding: 19px 13px 14px; }
+  .chat-heading { padding-bottom: 15px; }
+  .avatar-mini { width: 43px; height: 43px; border-radius: 14px; }
+  .assistant-name { font-size: 14px; }
+  .live-tag { padding: 7px 9px; font-size: 9px; }
+  .chat-messages { max-height: calc(100svh - 245px); padding: 18px 1px; }
+  .welcome-message { padding: 19px 13px; }
+  .welcome-message h2 { font-size: 20px; }
+  .welcome-message p { font-size: 12px; }
+  .suggestion { font-size: 10px; padding: 9px 10px; }
+  .message-bubble { max-width: 86%; font-size: 12px; }
+  .composer-wrap { border-radius: 15px; }
+  .composer-bottom { font-size: 9px; }
+  .chat-footer { font-size: 9px; }
+}
+@media (max-width: 380px) {
+  .hero-art { height: 335px; }
+  .hero-footer { letter-spacing: .06em; }
+  .footer-right { gap: 5px; }
+  .message-avatar { width: 27px; height: 27px; }
+  .message-bubble { max-width: 88%; padding: 10px 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
     transition-duration: .01ms !important;
   }
 }
 </style>
 </head>
+
 <body>
+<div id="universe" aria-hidden="true">
+  <canvas id="stars"></canvas>
+  <div class="nebula one"></div>
+  <div class="nebula two"></div>
+  <div class="scanlines"></div>
+</div>
 
-<!-- Custom illustrated AI girl avatar -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="chinni-girl" viewBox="0 0 200 200">
-    <defs>
-      <linearGradient id="hair" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#243e78"/>
-        <stop offset="100%" stop-color="#10182e"/>
-      </linearGradient>
-      <linearGradient id="face" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#ffe0d0"/>
-        <stop offset="100%" stop-color="#e9b3a9"/>
-      </linearGradient>
-      <linearGradient id="shirt" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#5caeff"/>
-        <stop offset="100%" stop-color="#294cbd"/>
-      </linearGradient>
-    </defs>
-    <circle cx="100" cy="100" r="96" fill="#132b4b"/>
-    <circle cx="100" cy="100" r="89" fill="none" stroke="#315b90" stroke-width="1.5"/>
-    <!-- Hair behind face -->
-    <path d="M45 94 Q28 20 101 18 Q172 18 158 99 L153 153 L48 153 Z" fill="url(#hair)"/>
-    <!-- Neck -->
-    <path d="M82 119 L82 143 Q100 158 118 140 L116 117 Z" fill="url(#face)"/>
-    <!-- Shoulders -->
-    <path d="M35 194 Q42 148 78 141 L100 158 L122 141 Q160 148 167 194 Z" fill="url(#shirt)"/>
-    <!-- Face -->
-    <path d="M62 66 Q66 39 101 40 Q136 41 139 70 L133 110 Q123 135 100 137 Q77 134 66 110 Z" fill="url(#face)"/>
-    <!-- Hair fringe -->
-    <path d="M53 83 Q45 33 91 29 Q133 20 151 57 Q156 70 144 93 L136 69 Q114 68 98 51 Q83 73 59 78 L62 106 Z" fill="url(#hair)"/>
-    <!-- Eyes -->
-    <path d="M75 91 Q84 83 92 91" fill="none" stroke="#3b3b59" stroke-width="3" stroke-linecap="round"/>
-    <path d="M109 91 Q118 83 126 91" fill="none" stroke="#3b3b59" stroke-width="3" stroke-linecap="round"/>
-    <circle cx="85" cy="94" r="2" fill="#263d6a"/>
-    <circle cx="119" cy="94" r="2" fill="#263d6a"/>
-    <!-- Smile -->
-    <path d="M88 112 Q100 123 113 112" fill="none" stroke="#b96371" stroke-width="2.5" stroke-linecap="round"/>
-    <!-- Blue hair accessory -->
-    <circle cx="140" cy="51" r="10" fill="#70e1ff"/>
-    <circle cx="140" cy="51" r="4" fill="#ffffff"/>
-    <!-- Shirt detail -->
-    <path d="M85 151 L100 169 L115 151" fill="none" stroke="#c3edff" stroke-width="3"/>
-    <circle cx="100" cy="178" r="4" fill="#8ceaff"/>
-  </symbol>
-</svg>
-
-<header class="topbar" id="homeHeader">
-  <div class="brand-logo">
-    <svg viewBox="0 0 200 200" width="42" height="42">
-      <use href="#chinni-girl"/>
-    </svg>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 40 40" fill="none">
+        <path d="M20 4 24 15 36 20 24 24 20 36 16 24 4 20 16 15 20 4Z"
+          stroke="#9CEBFF" stroke-width="1.5"/>
+        <circle cx="20" cy="20" r="4" fill="#9CEBFF"/>
+      </svg>
+    </div>
+    <div class="brand-name">CHINNI <span>AI</span></div>
   </div>
-  <div>
-    <div class="brand-name">CHINNI AI</div>
-    <div class="brand-sub">Your personal AI companion</div>
-  </div>
+  <div class="top-status"><span class="status-dot"></span> PERSONAL AI EXPERIENCE</div>
 </header>
 
-<section class="screen" id="welcomeScreen">
-  <main class="hero">
-    <div class="avatar-frame">
-      <svg class="avatar" viewBox="0 0 200 200" role="img" aria-label="Illustrated Chinni AI girl avatar">
-        <use href="#chinni-girl"/>
-      </svg>
-    </div>
-
-    <div class="eyebrow">YOUR AI COMPANION</div>
-    <h1>Meet <span class="gradient-text">Chinni.</span></h1>
-    <p class="description">
-      A little more understanding. A lot more possibility.
-      Your personal space to ask, explore, learn and create.
-    </p>
-
-    <button class="primary" id="startButton">
-      Start Chatting <span aria-hidden="true">→</span>
-    </button>
-
-    <div class="features">
-      <span class="feature">✧ Explore ideas</span>
-      <span class="feature">◇ Learn & grow</span>
-      <span class="feature">⌘ Create more</span>
-    </div>
-
-    <p class="footer-note">A fresh conversation starts here.</p>
-  </main>
-</section>
-
-<section class="screen chat-screen hidden" id="chatScreen">
-  <header class="chat-top">
-    <div class="brand-logo">
-      <svg viewBox="0 0 200 200" width="42" height="42">
-        <use href="#chinni-girl"/>
-      </svg>
-    </div>
-    <div>
-      <div class="chat-heading">Chinni AI</div>
-      <div class="status">Here to help you explore</div>
-    </div>
-    <button class="back" id="backButton">← Home</button>
-  </header>
-
-  <main class="chat-body">
-    <div class="chat-intro" id="chatIntro">
-      <div class="avatar-frame">
-        <svg class="avatar" viewBox="0 0 200 200" aria-hidden="true">
-          <use href="#chinni-girl"/>
-        </svg>
+<main>
+  <!-- INTRO SCREEN -->
+  <section id="intro" class="screen" aria-label="Chinni AI welcome">
+    <div class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="mini-dot"></span> A NEW KIND OF CONNECTION</div>
+        <h1>Meet your AI.<span class="gradient">Feel the future.</span></h1>
+        <p class="hero-description">
+          A little intelligence. A universe of possibilities.
+          Meet Chinni — your personal AI companion for ideas,
+          learning, creativity, and everyday conversations.
+        </p>
+        <div class="hero-actions">
+          <button class="start-btn" id="startChat" type="button">
+            <span>Start Chatting</span>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor"
+                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <span class="small-note">YOUR SPACE. YOUR CONVERSATION.</span>
+        </div>
       </div>
-      <h2>What's on your mind?</h2>
-      <p>Type a message to start your conversation.</p>
-    </div>
-    <div id="messages" aria-live="polite"></div>
-  </main>
 
-  <div class="composer-wrap">
-    <form class="composer" id="chatForm">
-      <input id="messageInput" type="text"
-        placeholder="Message Chinni..."
-        autocomplete="off" required aria-label="Your message">
-      <button class="send" type="submit" aria-label="Send message">↑</button>
-    </form>
-    <div class="note">Demo version · Real AI connection can be added next</div>
-  </div>
-</section>
+      <div class="hero-art" aria-label="Original illustrated futuristic AI girl">
+        <div class="art-glow"></div>
+        <div class="art-ring"><span class="ring-orbit"></span></div>
+
+        <!-- Original self-contained SVG character artwork -->
+        <svg class="portrait" viewBox="0 0 500 620" role="img"
+          aria-label="A futuristic AI girl with luminous blue hair and a holographic suit">
+          <defs>
+            <linearGradient id="hair" x1="90" y1="100" x2="390" y2="480" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#D8F8FF"/>
+              <stop offset=".22" stop-color="#70CFFF"/>
+              <stop offset=".55" stop-color="#456DE0"/>
+              <stop offset=".8" stop-color="#6A55CE"/>
+              <stop offset="1" stop-color="#172C67"/>
+            </linearGradient>
+            <linearGradient id="hairLight" x1="110" y1="160" x2="370" y2="300" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#E8FCFF"/>
+              <stop offset=".5" stop-color="#76E5FF"/>
+              <stop offset="1" stop-color="#8A91FF"/>
+            </linearGradient>
+            <linearGradient id="skin" x1="190" y1="170" x2="315" y2="350" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#FFE9F2"/>
+              <stop offset=".45" stop-color="#E7BBD1"/>
+              <stop offset="1" stop-color="#A778B5"/>
+            </linearGradient>
+            <linearGradient id="suit" x1="170" y1="390" x2="350" y2="600" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#A9EFFF"/>
+              <stop offset=".23" stop-color="#466CA6"/>
+              <stop offset=".65" stop-color="#18294E"/>
+              <stop offset="1" stop-color="#090F27"/>
+            </linearGradient>
+            <linearGradient id="metal" x1="180" y1="400" x2="335" y2="590" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#E7FDFF"/>
+              <stop offset=".45" stop-color="#72D9FF"/>
+              <stop offset="1" stop-color="#6469DE"/>
+            </linearGradient>
+            <radialGradient id="faceLight" cx="0" cy="0" r="1" gradientTransform="matrix(0 125 -98 0 244 225)" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#FFF6FC" stop-opacity=".7"/>
+              <stop offset="1" stop-color="#FFF6FC" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="5" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="softGlow">
+              <feGaussianBlur stdDeviation="13"/>
+            </filter>
+            <clipPath id="faceClip">
+              <path d="M174 175 Q185 117 246 116 Q309 119 326 181 L316 267 Q304 326 252 346 Q201 331 184 272Z"/>
+            </clipPath>
+          </defs>
+
+          <!-- halo and floating graphic elements -->
+          <g class="floating" opacity=".85">
+            <ellipse cx="250" cy="303" rx="166" ry="234" fill="none"
+              stroke="#60CFFF" stroke-opacity=".15" stroke-width="1"/>
+            <ellipse cx="250" cy="303" rx="150" ry="215" fill="none"
+              stroke="#9389FF" stroke-opacity=".16" stroke-dasharray="3 10"/>
+            <path d="M88 259 Q100 180 152 143" fill="none" stroke="#72DFFF" stroke-opacity=".65" stroke-width="1.5"/>
+            <path d="M347 148 Q402 197 410 273" fill="none" stroke="#8B8BFF" stroke-opacity=".6" stroke-width="1.5"/>
+            <circle cx="105" cy="230" r="3" fill="#8AEFFF" filter="url(#glow)"/>
+            <circle cx="395" cy="292" r="3" fill="#9D91FF" filter="url(#glow)"/>
+            <path d="M86 350h25m-12-12v24M385 170h23m-11-11v23" stroke="#91E8FF" stroke-opacity=".7"/>
+          </g>
+
+          <!-- hair silhouette -->
+          <g class="hair-back">
+            <path d="M147 230 Q113 165 152 108 Q190 49 263 64 Q337 68 369 134 Q392 185 357 286 L378 393 Q340 450 314 410 L319 313 L179 329 L182 421 Q138 447 119 379 L140 292Z"
+              fill="url(#hair)" stroke="#85E8FF" stroke-opacity=".55" stroke-width="1.5"/>
+            <path d="M159 139 Q118 224 151 304 L143 377 Q168 346 174 285 L187 139Z"
+              fill="#14295E" opacity=".7"/>
+            <path d="M337 114 Q390 194 344 294 L367 376 Q387 287 369 201Z"
+              fill="#91E9FF" opacity=".25"/>
+            <path d="M174 91 Q223 49 278 81 Q310 96 323 135 Q281 109 241 120 Q206 129 178 159Z"
+              fill="url(#hairLight)"/>
+            <path d="M163 120 Q140 183 164 250" fill="none" stroke="#C4F7FF" stroke-opacity=".8" stroke-width="3"/>
+            <path d="M192 95 Q166 157 186 219" fill="none" stroke="#A4EEFF" stroke-opacity=".65" stroke-width="2"/>
+            <path d="M330 122 Q361 177 337 250" fill="none" stroke="#A2B6FF" stroke-opacity=".8" stroke-width="3"/>
+            <path d="M353 160 Q375 237 345 301" fill="none" stroke="#8FDEFF" stroke-opacity=".45" stroke-width="2"/>
+          </g>
+
+          <!-- neck -->
+          <path d="M219 312 L216 377 Q247 403 281 375 L278 311Z"
+            fill="url(#skin)" stroke="#C49BCB" stroke-opacity=".45"/>
+
+          <!-- face -->
+          <path d="M174 175 Q185 117 246 116 Q309 119 326 181 L316 267 Q304 326 252 346 Q201 331 184 272Z"
+            fill="url(#skin)" stroke="#F1D5F0" stroke-opacity=".55" stroke-width="1.2"/>
+          <g clip-path="url(#faceClip)">
+            <rect x="170" y="115" width="170" height="240" fill="url(#faceLight)"/>
+            <ellipse cx="196" cy="256" rx="31" ry="18" fill="#ED9DC4" opacity=".2"/>
+            <ellipse cx="302" cy="256" rx="25" ry="18" fill="#ED9DC4" opacity=".18"/>
+          </g>
+
+          <!-- ears and ear technology -->
+          <path d="M178 219 Q157 207 162 237 Q165 256 184 254Z" fill="#D6A6C6"/>
+          <path d="M319 219 Q340 207 335 237 Q332 256 313 254Z" fill="#D6A6C6"/>
+          <g filter="url(#glow)">
+            <circle cx="173" cy="239" r="9" fill="#142B59" stroke="#84E9FF" stroke-width="2"/>
+            <circle cx="326" cy="239" r="9" fill="#142B59" stroke="#84E9FF" stroke-width="2"/>
+            <circle cx="173" cy="239" r="3" fill="#A4F4FF"/>
+            <circle cx="326" cy="239" r="3" fill="#A4F4FF"/>
+          </g>
+
+          <!-- bangs -->
+          <path d="M154 190 Q139 121 199 85 Q257 47 307 91 Q345 125 335 192
+            Q318 160 302 146 Q275 170 242 167 Q209 166 190 192
+            Q174 214 171 242 Q151 222 154 190Z"
+            fill="url(#hair)" stroke="#8AEAFF" stroke-opacity=".5"/>
+          <path d="M186 119 Q175 158 188 193 Q205 160 226 146"
+            fill="none" stroke="#D5FBFF" stroke-opacity=".9" stroke-width="3"/>
+          <path d="M242 96 Q259 130 247 166 Q281 155 302 128"
+            fill="none" stroke="#9DEBFF" stroke-opacity=".85" stroke-width="3"/>
+          <path d="M310 112 Q330 150 318 187" fill="none"
+            stroke="#9AA7FF" stroke-width="2.5" stroke-opacity=".9"/>
+
+          <!-- eyebrows and eyes -->
+          <path d="M191 209 Q210 194 231 207" fill="none" stroke="#725C9A" stroke-width="3" stroke-linecap="round"/>
+          <path d="M270 207 Q291 194 310 209" fill="none" stroke="#725C9A" stroke-width="3" stroke-linecap="round"/>
+          <path d="M191 225 Q209 208 232 224 Q212 247 191 225Z" fill="#F5FAFF"/>
+          <path d="M269 224 Q291 208 310 225 Q289 247 269 224Z" fill="#F5FAFF"/>
+          <g class="eye-glow" filter="url(#glow)">
+            <ellipse cx="212" cy="225" rx="8" ry="10" fill="#2D8FC9"/>
+            <ellipse cx="289" cy="225" rx="8" ry="10" fill="#2D8FC9"/>
+            <ellipse cx="212" cy="225" rx="4" ry="7" fill="#081A40"/>
+            <ellipse cx="289" cy="225" rx="4" ry="7" fill="#081A40"/>
+            <circle cx="215" cy="221" r="2.5" fill="#D9FFFF"/>
+            <circle cx="292" cy="221" r="2.5" fill="#D9FFFF"/>
+          </g>
+          <path d="M188 223 Q209 202 234 221" fill="none" stroke="#243B72" stroke-width="2"/>
+          <path d="M267 221 Q291 202 313 223" fill="none" stroke="#243B72" stroke-width="2"/>
+
+          <!-- nose and mouth -->
+          <path d="M249 228 L242 258 Q249 265 258 258" fill="none"
+            stroke="#B781AD" stroke-width="2" stroke-linecap="round"/>
+          <path d="M230 280 Q251 294 273 280 Q253 307 230 280Z"
+            fill="#B05E8E" stroke="#F2B8D8" stroke-width="1"/>
+          <path d="M235 282 Q251 287 268 282" fill="none" stroke="#FFE6F5" stroke-width="1.5"/>
+
+          <!-- holographic collar -->
+          <path d="M210 340 L211 365 Q250 390 287 364 L288 340 L269 355 L251 364 L231 355Z"
+            fill="#213B68" stroke="#9CEEFF" stroke-opacity=".75" stroke-width="1.5"/>
+          <path d="M218 354 L250 376 L281 354" fill="none" stroke="#8CEBFF" stroke-width="2"/>
+          <path d="M225 360 L250 382 L274 360" fill="none" stroke="#7B86FF" stroke-width="2"/>
+
+          <!-- shoulders and chest suit -->
+          <path d="M210 364 Q183 367 162 390 Q127 426 114 502 L110 577 Q166 604 249 607 Q333 604 390 577 L385 502 Q373 426 338 390 Q317 367 287 364 L250 394Z"
+            fill="url(#suit)" stroke="#8BE6FF" stroke-opacity=".65" stroke-width="1.5"/>
+          <path d="M210 365 L250 394 L287 365 L308 405 L250 447 L191 405Z"
+            fill="#152C58" stroke="#94E9FF" stroke-opacity=".7" stroke-width="1.5"/>
+          <path d="M250 395 L250 483" stroke="#8FEAFF" stroke-width="2" stroke-opacity=".8"/>
+          <path d="M192 405 L164 478 L180 550" fill="none" stroke="url(#metal)" stroke-width="3"/>
+          <path d="M308 405 L336 478 L320 550" fill="none" stroke="url(#metal)" stroke-width="3"/>
+          <path d="M143 476 Q171 462 190 485 L198 538 Q168 552 135 533Z"
+            fill="#1D3D6A" stroke="#83DFFF" stroke-opacity=".65"/>
+          <path d="M357 476 Q329 462 310 485 L302 538 Q332 552 365 533Z"
+            fill="#1D3D6A" stroke="#83DFFF" stroke-opacity=".65"/>
+          <path d="M144 497 L178 505 M143 510 L180 518 M355 497 L322 505 M357 510 L320 518"
+            stroke="#8CE8FF" stroke-opacity=".65" stroke-width="1.5"/>
+          <path d="M205 461 L219 476 L205 491 L191 476Z"
+            fill="#142C54" stroke="#8BEAFF" stroke-width="1.5"/>
+          <path d="M295 461 L309 476 L295 491 L281 476Z"
+            fill="#142C54" stroke="#8BEAFF" stroke-width="1.5"/>
+          <circle cx="250" cy="467" r="22" fill="#163B66" stroke="#8CEEFF" stroke-width="1.5"/>
+          <circle cx="250" cy="467" r="15" fill="#61CFFF" opacity=".18"/>
+          <circle cx="250" cy="467" r="7" fill="#B6F8FF" filter="url(#glow)"/>
+          <path d="M224 520 Q250 535 276 520" fill="none" stroke="#8DEAFF" stroke-opacity=".65" stroke-width="2"/>
+          <path d="M212 552 Q250 570 288 552" fill="none" stroke="#7E8FFF" stroke-opacity=".6" stroke-width="2"/>
+          <path d="M168 584 Q250 603 332 584" fill="none" stroke="#8CEEFF" stroke-opacity=".4"/>
+
+          <!-- small floating stars -->
+          <g class="sparkle" filter="url(#glow)">
+            <path d="M105 300 L109 311 L120 315 L109 319 L105 330 L101 319 L90 315 L101 311Z" fill="#B4F5FF"/>
+          </g>
+          <g class="sparkle" filter="url(#glow)">
+            <path d="M387 370 L390 378 L398 381 L390 384 L387 392 L384 384 L376 381 L384 378Z" fill="#B1ACFF"/>
+          </g>
+          <g class="sparkle" filter="url(#glow)">
+            <path d="M358 92 L361 99 L368 102 L361 105 L358 112 L355 105 L348 102 L355 99Z" fill="#B4F5FF"/>
+          </g>
+          <circle cx="128" cy="162" r="2" fill="#B4F5FF"/>
+          <circle cx="381" cy="443" r="2" fill="#B4F5FF"/>
+          <circle cx="339" cy="334" r="2" fill="#A5A5FF"/>
+          <circle cx="157" cy="448" r="2" fill="#B4F5FF"/>
+        </svg>
+
+        <div class="art-caption">
+          <small>CHINNI AI / SYSTEM</small>
+          <strong>Always curious. <span>Always evolving.</span></strong>
+        </div>
+      </div>
+    </div>
+    <footer class="hero-footer">
+      <span>DESIGNED FOR YOUR UNIVERSE</span>
+      <div class="footer-right"><span class="footer-line"></span> HUMAN IDEAS × AI POSSIBILITY</div>
+    </footer>
+  </section>
+
+  <!-- CHAT SCREEN -->
+  <section id="chatScreen" class="screen hidden" aria-label="Chinni AI chat">
+    <div class="chat-layout">
+      <div class="chat-heading">
+        <div class="assistant-id">
+          <div class="avatar-mini" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none">
+              <path d="M8 19Q4 6 18 5Q34 3 33 20L30 31L24 25L12 30Z"
+                fill="#6FCFFF" fill-opacity=".6" stroke="#9BEFFF"/>
+              <path d="M12 17Q13 10 20 10Q27 10 28 17L27 23Q24 29 20 29Q14 27 13 22Z"
+                fill="#E9C5E2"/>
+              <path d="M14 19Q17 16 19 19M22 19Q25 16 27 19"
+                stroke="#286EAE" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M18 24Q20 26 23 24" stroke="#AD6698" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="assistant-name">Chinni AI</div>
+            <div class="assistant-sub">Your personal AI space</div>
+          </div>
+        </div>
+        <div class="live-tag"><span class="status-dot"></span> ONLINE</div>
+      </div>
+
+      <div class="chat-messages" id="messages" aria-live="polite">
+        <div class="welcome-message" id="welcomeMessage">
+          <div class="welcome-symbol" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none">
+              <circle cx="24" cy="24" r="17" stroke="#7BDFFF" stroke-opacity=".5"/>
+              <circle cx="24" cy="24" r="11" stroke="#9E9AFF" stroke-opacity=".7"/>
+              <path d="M24 9L28 20L39 24L28 28L24 39L20 28L9 24L20 20Z"
+                stroke="#B3F5FF" stroke-width="1.4"/>
+              <circle cx="24" cy="24" r="3" fill="#D5FBFF"/>
+            </svg>
+          </div>
+          <h2>Welcome back to your universe.</h2>
+          <p>I'm Chinni. What are we exploring today?</p>
+          <div class="suggestions">
+            <button class="suggestion" data-prompt="Help me learn something new">✦ Learn something</button>
+            <button class="suggestion" data-prompt="Give me a creative AI video idea">◈ Creative ideas</button>
+            <button class="suggestion" data-prompt="Help me plan my day">◎ Plan my day</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="composer-wrap">
+        <form class="composer" id="chatForm">
+          <textarea id="messageInput" rows="1" maxlength="2000"
+            placeholder="Ask Chinni anything..." aria-label="Type your message"></textarea>
+          <button class="send-btn" id="sendButton" type="submit" aria-label="Send message">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M21 3L10.5 13.5M21 3L14.3 21L10.5 13.5L3 9.7L21 3Z"
+                stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </form>
+        <div class="composer-bottom">
+          <span><strong>↵ Enter</strong> to send · <strong>Shift + Enter</strong> for a new line</span>
+          <span id="charCount">0 / 2000</span>
+        </div>
+      </div>
+      <div class="chat-footer">
+        Chinni AI · A personal project made with imagination.
+        <br><b>Demo mode:</b> replies are simulated, not generated by a real AI model yet.
+      </div>
+    </div>
+  </section>
+</main>
 
 <script>
-const welcome = document.getElementById("welcomeScreen");
-const chat = document.getElementById("chatScreen");
-const input = document.getElementById("messageInput");
-const messages = document.getElementById("messages");
-const chatIntro = document.getElementById("chatIntro");
+(() => {
+  "use strict";
 
-document.getElementById("startButton").addEventListener("click", () => {
-  welcome.classList.add("hidden");
-  document.getElementById("homeHeader").classList.add("hidden");
-  chat.classList.remove("hidden");
-  input.focus();
-});
+  const intro = document.getElementById("intro");
+  const chatScreen = document.getElementById("chatScreen");
+  const startButton = document.getElementById("startChat");
+  const form = document.getElementById("chatForm");
+  const input = document.getElementById("messageInput");
+  const sendButton = document.getElementById("sendButton");
+  const messages = document.getElementById("messages");
+  const welcomeMessage = document.getElementById("welcomeMessage");
+  const charCount = document.getElementById("charCount");
 
-document.getElementById("backButton").addEventListener("click", () => {
-  chat.classList.add("hidden");
-  welcome.classList.remove("hidden");
-  document.getElementById("homeHeader").classList.remove("hidden");
-});
+  let isReplying = false;
+  let introOpened = false;
 
-document.getElementById("chatForm").addEventListener("submit", (event) => {
-  event.preventDefault();
-  const text = input.value.trim();
-  if (!text) return;
+  // Subtle star field, generated locally — no external assets.
+  const canvas = document.getElementById("stars");
+  const ctx = canvas.getContext("2d");
+  let stars = [];
+  let width = 0;
+  let height = 0;
+  let animationFrame = 0;
 
-  chatIntro.classList.add("hidden");
-  addMessage(text, "user-message");
-  input.value = "";
+  function makeStars() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-  addMessage(
-    "Thanks for sharing that with me! 💙 I'm currently using demo replies. A real AI connection can be added to give you intelligent answers.",
-    "bot-message"
-  );
-});
+    const count = Math.min(180, Math.floor(width * height / 6500));
+    stars = Array.from({ length: count }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      radius: Math.random() * 1.2 + 0.25,
+      alpha: Math.random() * 0.65 + 0.15,
+      speed: Math.random() * 0.25 + 0.04,
+      phase: Math.random() * Math.PI * 2
+    }));
+  }
 
-function addMessage(text, type) {
-  const message = document.createElement("div");
-  message.className = "message " + type;
-  message.textContent = text;
-  messages.appendChild(message);
-  message.scrollIntoView({ behavior: "smooth", block: "end" });
-}
+  function drawStars(time) {
+    ctx.clearRect(0, 0, width, height);
+    for (const star of stars) {
+      const twinkle = 0.72 + Math.sin(time * 0.0008 + star.phase) * 0.28;
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(185,225,255," + (star.alpha * twinkle) + ")";
+      ctx.fill();
+
+      star.y -= star.speed * 0.12;
+      if (star.y < -2) {
+        star.y = height + 2;
+        star.x = Math.random() * width;
+      }
+    }
+    animationFrame = requestAnimationFrame(drawStars);
+  }
+
+  makeStars();
+  animationFrame = requestAnimationFrame(drawStars);
+  window.addEventListener("resize", makeStars, { passive: true });
+
+  // Intro-to-chat transition.
+  function openChat() {
+    if (introOpened) return;
+    introOpened = true;
+    intro.classList.add("hidden");
+    chatScreen.classList.remove("hidden");
+    document.body.style.overflowY = "hidden";
+    window.setTimeout(() => {
+      input.focus({ preventScroll: true });
+      scrollMessages();
+    }, 450);
+  }
+
+  startButton.addEventListener("click", openChat);
+
+  function currentTime() {
+    return new Intl.DateTimeFormat(undefined, {
+      hour: "2-digit",
+      minute: "2-digit"
+    }).format(new Date());
+  }
+
+  function scrollMessages() {
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function addMessage(text, role) {
+    const row = document.createElement("div");
+    row.className = "message-row " + role;
+
+    const avatar = document.createElement("div");
+    avatar.className = "message-avatar";
+    avatar.textContent = role === "user" ? "YOU" : "C";
+
+    const content = document.createElement("div");
+    content.style.minWidth = "0";
+
+    const bubble = document.createElement("div");
+    bubble.className = "message-bubble";
+    // textContent prevents user messages from being interpreted as HTML.
+    bubble.textContent = text;
+
+    const time = document.createElement("div");
+    time.className = "message-time";
+    time.textContent = currentTime();
+
+    content.appendChild(bubble);
+    content.appendChild(time);
+    row.appendChild(avatar);
+    row.appendChild(content);
+    messages.appendChild(row);
+    scrollMessages();
+    return row;
+  }
+
+  function showTyping() {
+    const row = document.createElement("div");
+    row.className = "message-row";
+    row.id = "typingIndicator";
+
+    const avatar = document.createElement("div");
+    avatar.className = "message-avatar";
+    avatar.textContent = "C";
+
+    const bubble = document.createElement("div");
+    bubble.className = "message-bubble";
+    bubble.setAttribute("aria-label", "Chinni is typing");
+
+    const dots = document.createElement("div");
+    dots.className = "typing-dots";
+    for (let i = 0; i < 3; i++) {
+      dots.appendChild(document.createElement("span"));
+    }
+
+    bubble.appendChild(dots);
+    row.appendChild(avatar);
+    row.appendChild(bubble);
+    messages.appendChild(row);
+    scrollMessages();
+  }
+
+  function hideTyping() {
+    const typing = document.getElementById("typingIndicator");
+    if (typing) typing.remove();
+  }
+
+  // Offline demo replies. This is rule-based, not a connected AI model.
+  function demoReply(message) {
+    const text = message.toLowerCase();
+
+    if (/\b(hi|hello|hey|hlo|namaste)\b/.test(text)) {
+      return "Hey! ✨ Welcome to Chinni AI. I'm here to help you explore ideas, learn new things, write, plan, and create. What would you like to do today?";
+    }
+    if (text.includes("your name") || text.includes("who are you")) {
+      return "I'm Chinni AI — your personal assistant project. 🌌 This website is currently running in demo mode, so my responses come from simple built-in rules rather than a live AI model.";
+    }
+    if (text.includes("telugu") || text.includes("తెలుగు")) {
+      return "నమస్కారం! ✨ నేను Chinni AI demo assistant ని. ఈ website లో ప్రస్తుతం sample replies మాత్రమే ఉన్నాయి. Real AI API connect చేసిన తర్వాత ఇంకా సహజంగా Telugu-English లో మాట్లాడేలా తయారు చేయవచ్చు.";
+    }
+    if (text.includes("video") || text.includes("reel") || text.includes("story")) {
+      return "🎬 Creative idea: Begin with a silent close-up, a glowing blue light appearing in the character's eyes, then reveal a huge futuristic world with a slow camera pull-back. Add atmospheric sound, cinematic lighting, and a strong 2-second opening hook. Tell me your topic to develop this idea further.";
+    }
+    if (text.includes("learn") || text.includes("study") || text.includes("java") || text.includes("python")) {
+      return "📘 Let's make learning manageable. Choose one small topic, study the concept for 20 minutes, write a tiny example, and explain it in your own words. For coding, try this loop: learn → type the code yourself → run it → change one thing → observe the result. Which subject are you learning?";
+    }
+    if (text.includes("plan") || text.includes("day") || text.includes("routine")) {
+      return "◎ Here's a simple day-planning template:\n\n1. Pick your 3 most important tasks.\n2. Start with one 25-minute focus session.\n3. Take a short break and drink water.\n4. Reserve time for practice or exercise.\n5. Review what you completed before sleeping.\n\nWhat is your main goal today?";
+    }
+    if (text.includes("website") || text.includes("html") || text.includes("coding") || text.includes("github")) {
+      return "💻 Your Chinni AI website is a great starting point! Right now, the page runs its interface and demo replies directly in the browser. The next major upgrade is connecting a secure backend to a real AI model. Never put a private API key directly inside index.html, because website visitors could read it.";
+    }
+    if (text.includes("sad") || text.includes("stress") || text.includes("upset")) {
+      return "I'm sorry things feel difficult right now. 🌙 You don't have to solve everything at once. Take a slow breath, give yourself a little space, and start with just one thing you can control. If you'd like, tell me what's been on your mind. This is a demo reply, but your message deserves a thoughtful response.";
+    }
+    if (text.includes("thank")) {
+      return "You're welcome! ✨ Keep exploring, keep creating, and take your next step one at a time. What shall we work on next?";
+    }
+    if (text.includes("help")) {
+      return "Of course! I can demonstrate a few types of responses:\n\n✦ Learning and study plans\n✦ Creative video and story ideas\n✦ Coding and website guidance\n✦ Daily planning\n✦ Writing and brainstorming\n\nThese are sample responses in the current demo. Tell me which one you'd like to try.";
+    }
+
+    return "✨ I received your message: “" + message + "”\n\nThis Chinni AI website is working in demo mode. I can respond to a few built-in topics, but I can't intelligently understand every message yet. To make me a real conversational AI, the next step is to connect a secure backend and an AI model API.";
+  }
+
+  function setBusy(busy) {
+    isReplying = busy;
+    sendButton.disabled = busy;
+    input.disabled = busy;
+    sendButton.setAttribute("aria-busy", String(busy));
+  }
+
+  function sendMessage(text) {
+    const message = text.trim();
+    if (!message || isReplying) return;
+
+    if (welcomeMessage && welcomeMessage.isConnected) {
+      welcomeMessage.remove();
+    }
+
+    addMessage(message, "user");
+    input.value = "";
+    updateInputSize();
+    setBusy(true);
+    showTyping();
+
+    const delay = Math.min(1400, Math.max(550, message.length * 13));
+    window.setTimeout(() => {
+      hideTyping();
+      addMessage(demoReply(message), "assistant");
+      setBusy(false);
+      input.focus({ preventScroll: true });
+    }, delay);
+  }
+
+  function updateInputSize() {
+    input.style.height = "auto";
+    input.style.height = Math.min(input.scrollHeight, 130) + "px";
+    charCount.textContent = input.value.length + " / 2000";
+  }
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    sendMessage(input.value);
+  });
+
+  input.addEventListener("input", updateInputSize);
+
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && !event.shiftKey && !event.isComposing) {
+      event.preventDefault();
+      form.requestSubmit();
+    }
+  });
+
+  document.querySelectorAll(".suggestion").forEach((button) => {
+    button.addEventListener("click", () => {
+      sendMessage(button.dataset.prompt || button.textContent);
+    });
+  });
+
+  // If the chat section is opened after the intro, keep the newest message visible.
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) scrollMessages();
+  });
+})();
 </script>
 </body>
 </html>
