@@ -1140,28 +1140,55 @@ h1 .gradient {
     sendButton.setAttribute("aria-busy", String(busy));
   }
 
-  function sendMessage(text) {
-    const message = text.trim();
-    if (!message || isReplying) return;
+  
+async function sendMessage(text) {
+  const message = text.trim();
+  if (!message || isReplying) return;
 
-    if (welcomeMessage && welcomeMessage.isConnected) {
-      welcomeMessage.remove();
+  if (welcomeMessage && welcomeMessage.isConnected) {
+    welcomeMessage.remove();
+  }
+
+  addMessage(message, "user");
+  input.value = "";
+  updateInputSize();
+  setBusy(true);
+  showTyping();
+
+  try {
+    const response = await fetch(
+      "https://chinni-ai-backend.ravindrakanna534.workers.dev/chat",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "AI request failed");
     }
 
-    addMessage(message, "user");
-    input.value = "";
-    updateInputSize();
-    setBusy(true);
-    showTyping();
+    addMessage(data.reply, "assistant");
 
-    const delay = Math.min(1400, Math.max(550, message.length * 13));
-    window.setTimeout(() => {
-      hideTyping();
-      addMessage(demoReply(message), "assistant");
-      setBusy(false);
-      input.focus({ preventScroll: true });
-    }, delay);
+  } catch (error) {
+    console.error("Chinni AI error:", error);
+    addMessage(
+      "Sorry Arjun! AI connection lo problem vachindi. Please try again.",
+      "assistant"
+    );
+
+  } finally {
+    hideTyping();
+    setBusy(false);
+    input.focus({ preventScroll: true });
   }
+}
+
 
   function updateInputSize() {
     input.style.height = "auto";
