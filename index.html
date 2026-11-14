@@ -4,148 +4,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#030a18">
-<title>Chinni AI 2.0</title>
+<meta name="theme-color" content="#050914">
+<title>Chinni AI 2.0 — Beyond Imagination</title>
 
 <style>
 :root {
-  --bg: #030a18;
-  --blue: #35baff;
+  --bg: #050914;
+  --blue: #69d9ff;
   --cyan: #9af3ff;
-  --text: #effaff;
-  --muted: #91abc5;
-  --glass: rgba(5, 20, 43, .72);
-  --border: rgba(90, 194, 255, .35);
+  --purple: #927bff;
+  --glass: rgba(8, 22, 43, .72);
+  --border: rgba(105, 217, 255, .25);
 }
 
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-html, body {
-  width: 100%;
-  height: 100%;
+body {
+  min-height: 100vh;
   overflow: hidden;
-  background: var(--bg);
-  color: var(--text);
-  font-family: "Segoe UI", Arial, sans-serif;
-}
-
-button, textarea {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-#universe {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
+  font-family: Arial, sans-serif;
+  color: #fff;
   background:
-    radial-gradient(ellipse at 50% 45%, #123b68 0%, transparent 55%),
-    linear-gradient(135deg, #020817, #071a36 55%, #020817);
+    radial-gradient(ellipse at 50% 40%, #102b50 0%, #071326 40%, #030711 100%);
 }
-
-#stars {
-  width: 100%;
-  height: 100%;
-}
-
-.scanlines {
-  position: fixed;
-  inset: 0;
-  z-index: 15;
-  pointer-events: none;
-  opacity: .035;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 3px,
-    #8beaff 4px
-  );
-}
-
-.topbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 72px;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 35px;
-  background: linear-gradient(
-    to bottom,
-    rgba(2, 9, 23, .95),
-    rgba(2, 9, 23, .35)
-  );
-  border-bottom: 1px solid rgba(90, 190, 255, .15);
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.brand-icon {
-  width: 43px;
-  height: 43px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: 23px;
-  color: var(--cyan);
-  border: 1px solid var(--blue);
-  box-shadow: 0 0 20px #168bff55;
-}
-
-.brand span {
-  color: var(--cyan);
-}
-
-.top-right {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  color: var(--cyan);
-  font-size: 11px;
-  letter-spacing: 2px;
-}
-
-.status-dot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #53ffb3;
-  box-shadow: 0 0 12px #53ffb3;
-  margin-right: 7px;
-}
-
-/* INTRO */
 
 .screen {
   position: fixed;
   inset: 0;
-  z-index: 2;
+  display: none;
+  overflow: hidden;
 }
 
-.hidden {
-  display: none !important;
+.screen.active {
+  display: flex;
 }
+
+/* STAR BACKGROUND */
+
+#stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ROBOT LAYERS */
+
+.robot-background {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.robot-background img {
+  width: min(90vw, 850px);
+  height: 95vh;
+  object-fit: contain;
+  opacity: .13;
+  filter: blur(9px) brightness(.65);
+  transform: scale(1.12);
+}
+
+.robot-foreground {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.robot-foreground img {
+  width: min(76vw, 690px);
+  height: 91vh;
+  object-fit: contain;
+  filter: drop-shadow(0 0 35px rgba(67, 192, 255, .35));
+  animation: robotFloat 5s ease-in-out infinite;
+}
+
+@keyframes robotFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* INTRO SCREEN */
 
 #intro {
-  display: flex;
   align-items: center;
   justify-content: center;
 }
@@ -153,1019 +110,739 @@ button {
 .intro-content {
   position: relative;
   z-index: 5;
+  width: min(90%, 440px);
+  margin: auto 5% 5% auto;
+  padding: 28px;
   text-align: center;
-  max-width: 600px;
-  padding: 25px;
+  border: 1px solid var(--border);
+  border-radius: 25px;
+  background: rgba(4, 14, 30, .78);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 0 45px rgba(45, 172, 255, .15);
+}
+
+.logo {
+  color: var(--cyan);
+  font-size: 14px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
 }
 
 .intro-content h1 {
-  font-size: clamp(45px, 8vw, 82px);
-  line-height: 1;
-  margin-bottom: 18px;
-}
-
-.intro-content h1 span {
-  color: transparent;
-  background: linear-gradient(90deg, #a4f2ff, #43b5ff, #c4a4ff);
+  font-size: clamp(35px, 6vw, 55px);
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, #fff, #69d9ff, #a99aff);
   -webkit-background-clip: text;
-  background-clip: text;
+  color: transparent;
 }
 
 .intro-content p {
-  color: #b4cbe0;
-  line-height: 1.8;
-  margin-bottom: 28px;
-}
-
-.eyebrow {
-  color: var(--cyan);
-  font-size: 11px;
-  letter-spacing: 4px;
-  margin-bottom: 20px;
+  color: #b5cce5;
+  font-size: 14px;
+  line-height: 1.7;
 }
 
 .start-btn {
+  margin-top: 24px;
+  padding: 14px 32px;
   border: 0;
   border-radius: 30px;
-  padding: 16px 32px;
-  font-weight: 800;
-  color: #031323;
-  background: linear-gradient(120deg, #a4f2ff, #45b5ff);
-  box-shadow: 0 0 30px #36baff55;
+  color: #04111f;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  background: linear-gradient(120deg, #65dfff, #a5f5ff);
+  box-shadow: 0 0 25px rgba(89, 220, 255, .4);
   transition: .25s;
 }
 
 .start-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 45px #36baff88;
+  transform: scale(1.05);
+  box-shadow: 0 0 35px rgba(89, 220, 255, .7);
 }
 
-/* MAIN CHAT SCREEN */
+/* CHAT SCREEN */
 
 #chatScreen {
-  overflow: hidden;
-}
-
-/* BACKGROUND ROBOT */
-
-.robot-background {
-  position: absolute;
-  inset: 65px 0 0;
-  z-index: 1;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.robot-background img {
-  width: min(65vw, 850px);
-  height: 95%;
-  object-fit: contain;
-  object-position: center;
-  opacity: .23;
-  filter: blur(3px) saturate(.8) drop-shadow(0 0 45px #168bff55);
-  animation: backgroundFloat 8s ease-in-out infinite;
-}
-
-@keyframes backgroundFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
-
-/* FOREGROUND ROBOT */
-
-.robot-foreground {
-  position: absolute;
-  z-index: 3;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  width: min(68vw, 900px);
-  height: calc(100% - 75px);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.robot-foreground::before {
-  content: "";
-  position: absolute;
-  width: 70%;
-  height: 50%;
-  bottom: 4%;
-  border-radius: 50%;
-  background: #168bff55;
-  filter: blur(100px);
-}
-
-.robot-foreground img {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center bottom;
-  filter: drop-shadow(0 0 28px #32aaff44);
-  animation: foregroundFloat 6s ease-in-out infinite;
-}
-
-@keyframes foregroundFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-/* TOP GREETING */
-
-.greeting {
-  position: absolute;
-  z-index: 6;
-  top: 105px;
-  left: 4%;
-  width: min(390px, 40%);
-  padding: 18px 21px;
-  border-radius: 18px;
-  background: rgba(12, 49, 85, .68);
-  border: 1px solid var(--border);
-  box-shadow: 0 0 25px #168bff22;
-  backdrop-filter: blur(14px);
-}
-
-.greeting h2 {
-  color: var(--cyan);
-  font-size: 18px;
-  margin-bottom: 9px;
-}
-
-.greeting p {
-  color: #dceeff;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-/* CHAT MESSAGES */
-
-#messages {
-  position: absolute;
-  z-index: 8;
-  left: 4%;
-  top: 255px;
-  bottom: 125px;
-  width: min(420px, 42%);
-  overflow-y: auto;
-  display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 8px;
-  scroll-behavior: smooth;
 }
 
-#messages::-webkit-scrollbar {
-  width: 4px;
-}
-
-#messages::-webkit-scrollbar-thumb {
-  background: #39aaff66;
-  border-radius: 10px;
-}
-
-.welcome-card {
-  padding: 15px;
-  border: 1px solid rgba(105, 205, 255, .23);
-  border-radius: 16px;
-  background: rgba(5, 27, 54, .72);
-  backdrop-filter: blur(15px);
-}
-
-.welcome-card h3 {
-  color: var(--cyan);
-  margin-bottom: 8px;
-  font-size: 16px;
-}
-
-.welcome-card p {
-  font-size: 13px;
-  line-height: 1.7;
-  color: #c4d9ed;
-}
-
-.suggestions {
+.chat-top {
+  position: relative;
+  z-index: 6;
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 13px;
-}
-
-.quick-prompt {
-  border: 1px solid #52baff55;
-  border-radius: 20px;
-  padding: 8px 11px;
-  color: #d8f3ff;
-  background: #164b7455;
-  font-size: 11px;
-}
-
-.quick-prompt:hover {
-  background: #167bc077;
-}
-
-.message-row {
-  display: flex;
-  width: 100%;
-}
-
-.message-row.user {
-  justify-content: flex-end;
-}
-
-.message-bubble {
-  max-width: 90%;
-  padding: 12px 15px;
-  border-radius: 15px;
-  font-size: 13px;
-  line-height: 1.7;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 22px;
+  background: rgba(3, 12, 27, .65);
+  border-bottom: 1px solid var(--border);
   backdrop-filter: blur(14px);
 }
 
-.message-row.user .message-bubble {
-  color: #031323;
-  background: linear-gradient(120deg, #a4f2ff, #65bcff);
-  border-bottom-right-radius: 4px;
+.chat-brand {
+  color: var(--cyan);
+  font-size: 21px;
+  font-weight: bold;
+  letter-spacing: 2px;
 }
 
-.message-row.bot .message-bubble {
-  color: white;
-  background: rgba(11, 48, 82, .87);
-  border: 1px solid #60caff55;
-  border-bottom-left-radius: 4px;
+.status {
+  color: #7dffc2;
+  font-size: 12px;
+  margin-top: 5px;
 }
-
-.typing {
-  display: flex;
-  gap: 5px;
-  padding: 13px;
-  background: rgba(11, 48, 82, .85);
-  border-radius: 14px;
-  width: fit-content;
-}
-
-.typing span {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--cyan);
-  animation: pulse 1s infinite;
-}
-
-.typing span:nth-child(2) { animation-delay: .15s; }
-.typing span:nth-child(3) { animation-delay: .3s; }
-
-@keyframes pulse {
-  0%, 60%, 100% { opacity: .3; transform: translateY(0); }
-  30% { opacity: 1; transform: translateY(-4px); }
-}
-
-/* VOICE TOGGLE */
 
 .voice-toggle {
-  position: absolute;
-  z-index: 10;
-  top: 105px;
-  right: 35px;
-  border: 1px solid #65caff66;
+  padding: 10px 14px;
   border-radius: 22px;
-  padding: 10px 16px;
-  color: var(--cyan);
-  background: rgba(5, 25, 50, .75);
-  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  background: rgba(20, 49, 76, .8);
+  color: #d9f6ff;
+  cursor: pointer;
   font-size: 12px;
 }
 
-.voice-toggle:hover {
-  background: #13517c;
+.chat-layout {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  justify-content: flex-end;
+  padding: 20px;
 }
 
-/* BOTTOM INPUT */
+.chat-panel {
+  width: min(440px, 100%);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 23px;
+  background: rgba(3, 13, 29, .77);
+  backdrop-filter: blur(17px);
+  box-shadow: 0 0 40px rgba(36, 151, 255, .12);
+  overflow: hidden;
+}
+
+.chat-heading {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--cyan);
+  font-size: 15px;
+}
+
+.messages {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  scroll-behavior: smooth;
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  max-width: 90%;
+  gap: 5px;
+}
+
+.message.user {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.message.bot {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.message-label {
+  color: #80cfff;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.message-bubble {
+  padding: 12px 15px;
+  border-radius: 16px;
+  background: rgba(34, 75, 111, .65);
+  border: 1px solid rgba(105, 217, 255, .18);
+  color: #e7f5ff;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.message.user .message-bubble {
+  background: linear-gradient(135deg, #17628b, #344d91);
+  border-color: rgba(130, 220, 255, .35);
+}
+
+.typing {
+  color: #8bcde9;
+  font-size: 12px;
+  padding: 5px;
+}
+
+.quick-prompts {
+  display: flex;
+  gap: 7px;
+  padding: 10px 12px;
+  overflow-x: auto;
+}
+
+.quick-prompt {
+  flex: 0 0 auto;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 8px 12px;
+  color: #bfeeff;
+  background: rgba(23, 56, 83, .6);
+  cursor: pointer;
+  font-size: 11px;
+}
 
 .composer {
-  position: absolute;
-  z-index: 12;
-  left: 4%;
-  right: 4%;
-  bottom: 25px;
-}
-
-.input-wrap {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 13px;
-  min-height: 72px;
-  border-radius: 40px;
-  background: rgba(4, 20, 45, .88);
-  border: 1px solid #4cbaff88;
-  box-shadow:
-    0 0 25px #168bff33,
-    inset 0 0 20px #168bff11;
-  backdrop-filter: blur(20px);
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--border);
+  background: rgba(3, 12, 27, .85);
 }
 
 #messageInput {
   flex: 1;
   min-width: 0;
-  max-height: 110px;
-  resize: none;
+  height: 46px;
+  padding: 0 14px;
+  border: 1px solid rgba(105, 217, 255, .22);
+  border-radius: 14px;
   outline: none;
-  border: 0;
-  background: transparent;
   color: white;
-  padding: 10px;
-  font-size: 15px;
-  line-height: 1.5;
+  background: rgba(18, 39, 63, .85);
+  font-size: 14px;
 }
 
 #messageInput::placeholder {
-  color: #91abc5;
+  color: #7895b0;
 }
 
 .action-btn {
-  width: 49px;
-  height: 49px;
   flex: 0 0 auto;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  color: var(--cyan);
-  border: 1px solid #53caff88;
-  background: rgba(20, 92, 145, .45);
-  font-size: 21px;
-  transition: .2s;
-}
-
-.action-btn:hover {
-  box-shadow: 0 0 18px #35baff88;
-}
-
-#sendButton {
-  color: #041322;
+  width: 44px;
+  height: 44px;
   border: 0;
-  background: linear-gradient(135deg, #a4f2ff, #42b5ff);
-  font-size: 23px;
-  font-weight: 900;
+  border-radius: 13px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #04111f;
+  background: linear-gradient(135deg, #69d9ff, #a0f3ff);
 }
 
-#sendButton:disabled {
+.action-btn:disabled {
   opacity: .5;
   cursor: not-allowed;
 }
 
-#voiceButton.listening {
-  color: white;
-  background: #d94b70;
-  box-shadow: 0 0 20px #ff416666;
-}
-
-.composer-note {
+.footer-note {
+  padding: 0 12px 10px;
   text-align: center;
-  color: #8baac5;
+  color: #617d98;
   font-size: 10px;
-  padding-top: 8px;
 }
-
-/* MOBILE */
 
 @media (max-width: 700px) {
-  .topbar {
-    height: 65px;
-    padding: 0 16px;
-  }
-
-  .brand {
-    font-size: 17px;
-  }
-
-  .brand-icon {
-    width: 36px;
-    height: 36px;
-  }
-
-  .top-right {
-    font-size: 9px;
-    letter-spacing: 1px;
-  }
-
-  .robot-background {
-    inset: 65px 0 0;
-    justify-content: center;
-    align-items: center;
+  .robot-foreground img {
+    width: 100vw;
+    height: 72vh;
+    object-position: center;
+    opacity: .88;
   }
 
   .robot-background img {
-    width: 110vw;
-    height: 85%;
-    opacity: .18;
-    filter: blur(4px);
-  }
-
-  .robot-foreground {
     width: 115vw;
-    height: 67%;
-    bottom: 95px;
+    height: 80vh;
   }
 
-  .robot-foreground img {
-    opacity: .82;
-    object-position: center bottom;
+  .intro-content {
+    margin: auto 5% 5%;
+    width: 90%;
+    padding: 22px;
+    background: rgba(4, 14, 30, .82);
   }
 
-  .greeting {
-    top: 82px;
-    left: 14px;
-    width: calc(100% - 28px);
-    padding: 12px 15px;
+  .chat-layout {
+    padding: 10px;
   }
 
-  .greeting h2 {
-    font-size: 15px;
-    margin-bottom: 4px;
+  .chat-panel {
+    width: 100%;
+    background: rgba(3, 13, 29, .82);
   }
 
-  .greeting p {
-    font-size: 12px;
-  }
-
-  #messages {
-    left: 12px;
-    right: 12px;
-    top: 180px;
-    bottom: 165px;
-    width: auto;
-    padding: 5px;
-  }
-
-  .welcome-card {
-    background: rgba(4, 22, 45, .84);
-  }
-
-  .voice-toggle {
-    top: auto;
-    right: 16px;
-    bottom: 112px;
-    padding: 8px 12px;
-    font-size: 11px;
-  }
-
-  .composer {
-    left: 10px;
-    right: 10px;
-    bottom: 12px;
-  }
-
-  .input-wrap {
-    min-height: 60px;
-    padding: 6px 8px;
-    gap: 7px;
-  }
-
-  #messageInput {
-    font-size: 14px;
-    padding: 8px 5px;
-  }
-
-  .action-btn {
-    width: 42px;
-    height: 42px;
-    font-size: 18px;
-  }
-
-  .composer-note {
-    font-size: 9px;
+  .chat-top {
+    padding: 13px;
   }
 }
-
-@media (max-width: 380px) {
-  .top-right {
-    display: none;
-  }
-
-  .robot-foreground {
-    height: 60%;
-  }
-
-  #messages {
-    top: 175px;
-  }
-}
-
 </style>
 </head>
 
 <body>
 
-<div id="universe">
-  <canvas id="stars"></canvas>
-</div>
+<canvas id="stars"></canvas>
 
-<div class="scanlines"></div>
+<!-- MAIN INTRO SCREEN -->
 
-<header class="topbar">
-  <div class="brand">
-    <div class="brand-icon">✦</div>
-    <div>CHINNI <span>AI 2.0</span></div>
-  </div>
+<section id="intro" class="screen active">
 
-  <div class="top-right">
-    <span><i class="status-dot"></i>ONLINE</span>
-    <span>AI COMPANION</span>
-  </div>
-</header>
-
-<!-- INTRO SCREEN -->
-
-<section id="intro" class="screen">
-  <div class="intro-content">
-    <div class="eyebrow">YOUR PERSONAL AI COMPANION</div>
-    <h1>Meet <span>Chinni AI.</span></h1>
-    <p>
-      A smarter way to think, learn, create and explore.
-      Your intelligent AI companion is ready to talk with you.
-    </p>
-    <button class="start-btn" id="startButton">
-      Start Chatting →
-    </button>
-  </div>
-</section>
-
-<!-- CHAT SCREEN -->
-
-<section id="chatScreen" class="screen hidden">
-
-  <!-- BACKGROUND ROBOT -->
   <div class="robot-background">
     <img src="chinni-realistic-avatar.jpg"
          alt="Chinni background humanoid">
   </div>
 
-  <!-- FOREGROUND ROBOT -->
   <div class="robot-foreground">
     <img src="chinni-realistic-avatar.jpg"
-         alt="Chinni foreground humanoid">
+         alt="Chinni AI humanoid robot">
   </div>
 
-  <!-- GREETING -->
-  <div class="greeting">
-    <h2>Hello! I'm Chinni AI 🤖</h2>
-    <p>Your personal AI companion. Ask me anything. I'm ready to help you!</p>
+  <div class="intro-content">
+    <div class="logo">YOUR PERSONAL AI</div>
+    <h1>CHINNI AI</h1>
+    <p>
+      Beyond Imagination.<br>
+      Your intelligent AI companion is ready.<br>
+      Talk, explore and create with Chinni.
+    </p>
+    <button class="start-btn" id="startBtn">
+      ✦ Start Chatting
+    </button>
   </div>
 
-  <!-- VOICE TOGGLE -->
-  <button type="button" id="voiceToggle" class="voice-toggle">
-    🔇 Voice OFF
-  </button>
+</section>
 
-  <!-- MESSAGES -->
-  <div id="messages">
+<!-- CHAT SCREEN -->
 
-    <div class="welcome-card">
-      <h3>Welcome back! 💙</h3>
-      <p>
-        You can talk to me in Telugu or English.
-        Choose a topic or type your own message below.
-      </p>
+<section id="chatScreen" class="screen">
 
-      <div class="suggestions">
-        <button class="quick-prompt">Tell me a joke</button>
-        <button class="quick-prompt">Explain AI</button>
-        <button class="quick-prompt">Help me learn English</button>
-        <button class="quick-prompt">నాతో తెలుగులో మాట్లాడు</button>
+  <div class="robot-background">
+    <img src="chinni-realistic-avatar.jpg"
+         alt="Chinni background robot">
+  </div>
+
+  <div class="robot-foreground">
+    <img src="chinni-realistic-avatar.jpg"
+         alt="Chinni humanoid avatar">
+  </div>
+
+  <header class="chat-top">
+    <div>
+      <div class="chat-brand">CHINNI AI</div>
+      <div class="status">● Online · Gemini AI</div>
+    </div>
+
+    <button class="voice-toggle" id="voiceToggle">
+      🔇 Voice OFF
+    </button>
+  </header>
+
+  <main class="chat-layout">
+    <div class="chat-panel">
+
+      <div class="chat-heading">
+        ✨ Chat with Chinni
       </div>
+
+      <div class="messages" id="messages">
+        <div class="message bot">
+          <span class="message-label">CHINNI</span>
+          <div class="message-bubble">
+            Hi! I'm Chinni. 😊 How can I help you today?
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-prompts">
+        <button class="quick-prompt" data-prompt="Hi Chinni!">
+          👋 Say Hi
+        </button>
+        <button class="quick-prompt" data-prompt="Tell me a joke">
+          😂 Tell a joke
+        </button>
+        <button class="quick-prompt" data-prompt="What can you do?">
+          ✨ Your abilities
+        </button>
+      </div>
+
+      <div class="composer">
+        <button class="action-btn" id="micBtn"
+                title="Speak">🎙️</button>
+
+        <input id="messageInput"
+               type="text"
+               placeholder="Message Chinni..."
+               autocomplete="off">
+
+        <button class="action-btn" id="sendBtn"
+                title="Send">➤</button>
+      </div>
+
+      <div class="footer-note">
+        Chinni AI 2.0 · Powered by Gemini
+      </div>
+
     </div>
-
-  </div>
-
-  <!-- MESSAGE INPUT -->
-  <form class="composer" id="chatForm">
-    <div class="input-wrap">
-
-      <textarea
-        id="messageInput"
-        rows="1"
-        placeholder="Message Chinni..."
-        autocomplete="off"
-      ></textarea>
-
-      <button type="button"
-              class="action-btn"
-              id="voiceButton"
-              title="Speak">🎙</button>
-
-      <button type="submit"
-              class="action-btn"
-              id="sendButton"
-              title="Send">➤</button>
-
-    </div>
-
-    <div class="composer-note">
-      Enter to send · Shift + Enter for new line
-    </div>
-  </form>
+  </main>
 
 </section>
 
 <script>
-(() => {
-  "use strict";
+/* ELEMENTS */
 
-  // EXISTING GEMINI BACKEND - DO NOT CHANGE
-  const API_URL =
-    "https://chinni-ai-backend.ravindrakanna534.workers.dev/chat";
+const intro = document.getElementById("intro");
+const chatScreen = document.getElementById("chatScreen");
+const startBtn = document.getElementById("startBtn");
+const messages = document.getElementById("messages");
+const messageInput = document.getElementById("messageInput");
+const sendBtn = document.getElementById("sendBtn");
+const micBtn = document.getElementById("micBtn");
+const voiceToggle = document.getElementById("voiceToggle");
 
-  const intro = document.getElementById("intro");
-  const chatScreen = document.getElementById("chatScreen");
-  const startButton = document.getElementById("startButton");
-  const messages = document.getElementById("messages");
-  const form = document.getElementById("chatForm");
-  const input = document.getElementById("messageInput");
-  const sendButton = document.getElementById("sendButton");
-  const voiceButton = document.getElementById("voiceButton");
-  const voiceToggle = document.getElementById("voiceToggle");
+const BACKEND_URL =
+  "https://chinni-ai-backend.ravindrakanna534.workers.dev/chat";
 
-  let isReplying = false;
-  let recognition = null;
-  let isListening = false;
-  let voiceEnabled = false;
+let isReplying = false;
+let isListening = false;
+let voiceEnabled = false;
 
-  // VOICE ON / OFF
-  voiceToggle.addEventListener("click", () => {
-    voiceEnabled = !voiceEnabled;
+/* OPEN CHAT */
 
-    voiceToggle.textContent = voiceEnabled
-      ? "🔊 Voice ON"
-      : "🔇 Voice OFF";
+function openChat() {
+  intro.classList.remove("active");
+  chatScreen.classList.add("active");
+  messageInput.focus();
+  scrollMessages();
+}
 
-    if (!voiceEnabled && "speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-    }
-  });
+startBtn.addEventListener("click", openChat);
 
-  // OPEN CHAT
-  function openChat() {
-    intro.classList.add("hidden");
-    chatScreen.classList.remove("hidden");
+/* ADD MESSAGE */
 
-    setTimeout(() => {
-      input.focus();
-      scrollMessages();
-    }, 150);
-  }
+function addMessage(text, sender) {
+  const message = document.createElement("div");
+  message.className = "message " + sender;
 
-  startButton.addEventListener("click", openChat);
+  const label = document.createElement("span");
+  label.className = "message-label";
+  label.textContent = sender === "user" ? "YOU" : "CHINNI";
 
-  // SCROLL
-  function scrollMessages() {
-    messages.scrollTop = messages.scrollHeight;
-  }
+  const bubble = document.createElement("div");
+  bubble.className = "message-bubble";
+  bubble.textContent = text;
 
-  // ADD MESSAGE
-  function addMessage(text, sender) {
-    const row = document.createElement("div");
-    row.className = "message-row " + sender;
+  message.appendChild(label);
+  message.appendChild(bubble);
+  messages.appendChild(message);
 
-    const bubble = document.createElement("div");
-    bubble.className = "message-bubble";
-    bubble.textContent = text;
+  scrollMessages();
+  return bubble;
+}
 
-    row.appendChild(bubble);
-    messages.appendChild(row);
+/* SCROLL */
 
-    scrollMessages();
-    return row;
-  }
+function scrollMessages() {
+  messages.scrollTop = messages.scrollHeight;
+}
 
-  // TYPING ANIMATION
-  function showTyping() {
-    const row = document.createElement("div");
-    row.className = "message-row bot";
-    row.id = "typingIndicator";
+/* TYPING INDICATOR */
 
-    const typing = document.createElement("div");
-    typing.className = "typing";
+function showTyping() {
+  const typing = document.createElement("div");
+  typing.className = "typing";
+  typing.id = "typingIndicator";
+  typing.textContent = "Chinni is thinking...";
+  messages.appendChild(typing);
+  scrollMessages();
+}
 
-    for (let i = 0; i < 3; i++) {
-      const dot = document.createElement("span");
-      typing.appendChild(dot);
-    }
+function hideTyping() {
+  const typing = document.getElementById("typingIndicator");
+  if (typing) typing.remove();
+}
 
-    row.appendChild(typing);
-    messages.appendChild(row);
-    scrollMessages();
-  }
+/* SEND MESSAGE TO GEMINI */
 
-  function hideTyping() {
-    const typing = document.getElementById("typingIndicator");
-    if (typing) typing.remove();
-  }
+async function sendMessage(text) {
+  text = text.trim();
 
-  // BUSY STATE
-  function setBusy(value) {
-    isReplying = value;
-    sendButton.disabled = value;
-    input.disabled = value;
-  }
+  if (!text || isReplying) return;
 
-  // FEMALE VOICE PREFERENCE
-  function speakText(text) {
-    if (!("speechSynthesis" in window)) return;
+  addMessage(text, "user");
+  messageInput.value = "";
 
-    window.speechSynthesis.cancel();
+  isReplying = true;
+  sendBtn.disabled = true;
+  showTyping();
 
-    const speech = new SpeechSynthesisUtterance(text);
-    const isTelugu = /[\u0C00-\u0C7F]/.test(text);
-    const voices = window.speechSynthesis.getVoices();
-
-    let selectedVoice = null;
-
-    if (isTelugu) {
-      selectedVoice =
-        voices.find(v =>
-          /^te[-_]/i.test(v.lang) &&
-          /female|woman/i.test(v.name)
-        ) ||
-        voices.find(v =>
-          /^te[-_]/i.test(v.lang)
-        );
-    } else {
-      selectedVoice =
-        voices.find(v =>
-          /female|woman|zira|samantha/i.test(v.name) &&
-          /en/i.test(v.lang)
-        ) ||
-        voices.find(v =>
-          /en-IN/i.test(v.lang)
-        ) ||
-        voices.find(v =>
-          /^en/i.test(v.lang)
-        );
-    }
-
-    speech.lang = isTelugu ? "te-IN" : "en-IN";
-    speech.rate = 0.92;
-    speech.pitch = 1.15;
-    speech.volume = 1;
-
-    if (selectedVoice) {
-      speech.voice = selectedVoice;
-    }
-
-    window.speechSynthesis.speak(speech);
-  }
-
-  // SEND MESSAGE TO GEMINI
-  async function sendMessage(text) {
-    const message = String(text || "").trim();
-
-    if (!message || isReplying) return;
-
-    addMessage(message, "user");
-
-    input.value = "";
-    input.style.height = "auto";
-
-    setBusy(true);
-    showTyping();
-
-    try {
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          message: message
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error("Server error: " + response.status);
-      }
-
-      const data = await response.json();
-
-      hideTyping();
-
-      if (!data || !data.reply) {
-        throw new Error("Empty AI response");
-      }
-
-      const reply = String(data.reply);
-
-      addMessage(reply, "bot");
-
-      if (voiceEnabled) {
-        speakText(reply);
-      }
-
-    } catch (error) {
-      hideTyping();
-
-      console.error("Chinni connection error:", error);
-
-      addMessage(
-        "Sorry Arjun! AI connection lo problem vachindi. Please try again.",
-        "bot"
-      );
-
-    } finally {
-      setBusy(false);
-      input.focus();
-    }
-  }
-
-  // FORM SUBMIT
-  form.addEventListener("submit", event => {
-    event.preventDefault();
-    sendMessage(input.value);
-  });
-
-  // ENTER TO SEND
-  input.addEventListener("keydown", event => {
-    if (
-      event.key === "Enter" &&
-      !event.shiftKey &&
-      !event.isComposing
-    ) {
-      event.preventDefault();
-      form.requestSubmit();
-    }
-  });
-
-  // AUTO RESIZE
-  input.addEventListener("input", () => {
-    input.style.height = "auto";
-    input.style.height =
-      Math.min(input.scrollHeight, 110) + "px";
-  });
-
-  // QUICK PROMPTS
-  document.querySelectorAll(".quick-prompt").forEach(button => {
-    button.addEventListener("click", () => {
-      sendMessage(button.textContent);
-    });
-  });
-
-  // MICROPHONE INPUT
-  const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-  if (SpeechRecognition) {
-    recognition = new SpeechRecognition();
-
-    recognition.lang = "te-IN";
-    recognition.continuous = false;
-    recognition.interimResults = false;
-
-    recognition.onstart = () => {
-      isListening = true;
-      voiceButton.classList.add("listening");
-      voiceButton.textContent = "🔴";
-    };
-
-    recognition.onresult = event => {
-      const transcript =
-        event.results[0][0].transcript;
-
-      input.value = transcript;
-      input.dispatchEvent(new Event("input"));
-      input.focus();
-    };
-
-    recognition.onerror = event => {
-      console.error("Microphone error:", event.error);
-    };
-
-    recognition.onend = () => {
-      isListening = false;
-      voiceButton.classList.remove("listening");
-      voiceButton.textContent = "🎙";
-    };
-
-    voiceButton.addEventListener("click", () => {
-      if (isListening) {
-        recognition.stop();
-      } else {
-        try {
-          recognition.start();
-        } catch (error) {
-          console.log("Microphone:", error);
-        }
-      }
+  try {
+    const response = await fetch(BACKEND_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: text
+      })
     });
 
-  } else {
-    voiceButton.addEventListener("click", () => {
-      addMessage(
-        "Your browser does not support voice input. Please use Chrome.",
-        "bot"
-      );
-    });
-  }
-
-  // LOAD AVAILABLE VOICES
-  if ("speechSynthesis" in window) {
-    window.speechSynthesis.getVoices();
-
-    window.speechSynthesis.onvoiceschanged = () => {
-      window.speechSynthesis.getVoices();
-    };
-  }
-
-  // STOP SPEECH WHEN PAGE IS HIDDEN
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden && "speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
+    if (!response.ok) {
+      throw new Error("Server error: " + response.status);
     }
 
-    if (!document.hidden) {
-      scrollMessages();
+    const data = await response.json();
+
+    if (!data.reply) {
+      throw new Error("Empty AI response");
     }
-  });
 
-  // STAR ANIMATION
-  const canvas = document.getElementById("stars");
-  const ctx = canvas.getContext("2d");
+    hideTyping();
+    addMessage(data.reply, "bot");
 
-  let stars = [];
-  let width = 0;
-  let height = 0;
+    if (voiceEnabled) {
+      speakText(data.reply);
+    }
 
-  function resizeStars() {
-    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+  } catch (error) {
+    hideTyping();
 
-    width = window.innerWidth;
-    height = window.innerHeight;
-
-    canvas.width = width * ratio;
-    canvas.height = height * ratio;
-
-    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-
-    stars = [];
-
-    const count = Math.min(
-      Math.floor((width * height) / 6500),
-      180
+    addMessage(
+      "Sorry! AI connection lo problem vachindi. Please try again.",
+      "bot"
     );
 
-    for (let i = 0; i < count; i++) {
-      stars.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        radius: Math.random() * 1.4 + .3,
-        alpha: Math.random() * .65 + .2,
-        speed: Math.random() * .25 + .05
-      });
-    }
+    console.error("Chinni error:", error);
+
+  } finally {
+    isReplying = false;
+    sendBtn.disabled = false;
+    messageInput.focus();
+  }
+}
+
+/* SEND BUTTON */
+
+sendBtn.addEventListener("click", () => {
+  sendMessage(messageInput.value);
+});
+
+/* ENTER KEY */
+
+messageInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    sendMessage(messageInput.value);
+  }
+});
+
+/* QUICK PROMPTS */
+
+document.querySelectorAll(".quick-prompt").forEach(button => {
+  button.addEventListener("click", () => {
+    sendMessage(button.dataset.prompt);
+  });
+});
+
+/* VOICE OUTPUT */
+
+voiceToggle.addEventListener("click", () => {
+  voiceEnabled = !voiceEnabled;
+
+  if (!voiceEnabled) {
+    speechSynthesis.cancel();
   }
 
-  function drawStars() {
-    ctx.clearRect(0, 0, width, height);
+  voiceToggle.textContent = voiceEnabled
+    ? "🔊 Voice ON"
+    : "🔇 Voice OFF";
+});
 
-    stars.forEach(star => {
-      const alpha =
-        star.alpha +
-        Math.sin(Date.now() * .001 * star.speed) * .15;
+function speakText(text) {
+  if (!("speechSynthesis" in window)) return;
 
-      ctx.beginPath();
-      ctx.arc(
-        star.x,
-        star.y,
-        star.radius,
-        0,
-        Math.PI * 2
-      );
+  speechSynthesis.cancel();
 
-      ctx.fillStyle =
-        "rgba(150,220,255," +
-        Math.max(.15, Math.min(.9, alpha)) +
-        ")";
+  const speech = new SpeechSynthesisUtterance(text);
 
-      ctx.fill();
+  const isTelugu = /[\u0C00-\u0C7F]/.test(text);
+
+  speech.lang = isTelugu ? "te-IN" : "en-IN";
+  speech.rate = 0.92;
+  speech.pitch = 1.15;
+  speech.volume = 1;
+
+  const voices = speechSynthesis.getVoices();
+
+  let selectedVoice = null;
+
+  if (isTelugu) {
+    selectedVoice = voices.find(v =>
+      v.lang.toLowerCase().startsWith("te")
+    );
+  }
+
+  if (!selectedVoice) {
+    selectedVoice = voices.find(v =>
+      v.lang.toLowerCase().startsWith("en-in") &&
+      /female|heera/i.test(v.name)
+    );
+  }
+
+  if (!selectedVoice) {
+    selectedVoice = voices.find(v =>
+      v.lang.toLowerCase().startsWith("en-in")
+    );
+  }
+
+  if (selectedVoice) {
+    speech.voice = selectedVoice;
+  }
+
+  speechSynthesis.speak(speech);
+}
+
+/* MICROPHONE INPUT */
+
+const SpeechRecognition =
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
+
+let recognition = null;
+
+if (SpeechRecognition) {
+  recognition = new SpeechRecognition();
+  recognition.lang = "te-IN";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  recognition.onstart = () => {
+    isListening = true;
+    micBtn.textContent = "🔴";
+  };
+
+  recognition.onend = () => {
+    isListening = false;
+    micBtn.textContent = "🎙️";
+  };
+
+  recognition.onresult = (event) => {
+    const transcript =
+      event.results[0][0].transcript;
+
+    messageInput.value = transcript;
+    sendMessage(transcript);
+  };
+
+  recognition.onerror = (event) => {
+    console.error("Microphone error:", event.error);
+    isListening = false;
+    micBtn.textContent = "🎙️";
+  };
+}
+
+micBtn.addEventListener("click", () => {
+  if (!recognition) {
+    addMessage(
+      "Your browser does not support voice recognition. Please use Chrome.",
+      "bot"
+    );
+    return;
+  }
+
+  if (isListening) {
+    recognition.stop();
+  } else {
+    recognition.start();
+  }
+});
+
+/* STAR ANIMATION */
+
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+
+let stars = [];
+let width = 0;
+let height = 0;
+let animationFrame = 0;
+
+function resizeCanvas() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+
+  stars = [];
+
+  const count = Math.min(
+    130,
+    Math.floor((width * height) / 9000)
+  );
+
+  for (let i = 0; i < count; i++) {
+    stars.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      size: Math.random() * 1.5 + .3,
+      speed: Math.random() * .35 + .08,
+      alpha: Math.random() * .7 + .2
     });
-
-    requestAnimationFrame(drawStars);
   }
+}
 
-  window.addEventListener("resize", resizeStars);
+function animateStars() {
+  ctx.clearRect(0, 0, width, height);
 
-  resizeStars();
-  drawStars();
+  stars.forEach(star => {
+    star.y -= star.speed;
 
-})();
+    if (star.y < 0) {
+      star.y = height;
+      star.x = Math.random() * width;
+    }
+
+    ctx.beginPath();
+    ctx.arc(
+      star.x,
+      star.y,
+      star.size,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fillStyle =
+      `rgba(140, 220, 255, ${star.alpha})`;
+
+    ctx.fill();
+  });
+
+  animationFrame = requestAnimationFrame(animateStars);
+}
+
+window.addEventListener("resize", resizeCanvas);
+
+resizeCanvas();
+animateStars();
+
+/* PAGE VISIBILITY */
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    scrollMessages();
+  }
+});
 </script>
 
 </body>
