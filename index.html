@@ -972,7 +972,60 @@ h1 .gradient {
   const charCount = document.getElementById("charCount");
 
   let isReplying = false;
-  let introOpened = false;
+let introOpened = false;
+
+// VOICE RECOGNITION START
+let recognition = null;
+let isListening = false;
+
+const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (SpeechRecognition && voiceButton) {
+  recognition = new SpeechRecognition();
+  recognition.lang = "te-IN";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  voiceButton.addEventListener("click", () => {
+    if (isListening) {
+      recognition.stop();
+      return;
+    }
+    try {
+      recognition.start();
+    } catch (error) {
+      console.log("Microphone:", error);
+    }
+  });
+
+  recognition.onstart = () => {
+    isListening = true;
+    voiceButton.textContent = "🔴";
+  };
+
+  recognition.onresult = (event) => {
+    input.value = event.results[0][0].transcript;
+    updateInputSize();
+  };
+
+  recognition.onerror = (event) => {
+    alert("Microphone error: " + event.error);
+  };
+
+  recognition.onend = () => {
+    isListening = false;
+    voiceButton.textContent = "🎙️";
+  };
+} else if (voiceButton) {
+  voiceButton.addEventListener("click", () => {
+    alert("Please use Google Chrome for voice recognition.");
+  });
+}
+// VOICE RECOGNITION END
+
+// Subtle star field, generated locally — no external assets.
+const canvas = document.getElementById("stars");
 
   // Subtle star field, generated locally — no external assets.
   const canvas = document.getElementById("stars");
