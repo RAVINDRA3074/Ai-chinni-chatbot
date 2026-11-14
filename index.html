@@ -1123,7 +1123,27 @@ if (SpeechRecognition && voiceButton) {
     bubble.className = "message-bubble";
     // textContent prevents user messages from being interpreted as HTML.
     bubble.textContent = text;
+        if (role === "assistant" && "speechSynthesis" in window) {
+      const speakButton = document.createElement("button");
+      speakButton.type = "button";
+      speakButton.textContent = "🔊";
+      speakButton.title = "Listen to Chinni";
+      speakButton.style.cssText =
+        "border:0;background:transparent;color:#8bdcff;cursor:pointer;font-size:18px;padding:6px;";
 
+      speakButton.addEventListener("click", () => {
+        window.speechSynthesis.cancel();
+
+        const speech = new SpeechSynthesisUtterance(text);
+        speech.lang = /[\u0C00-\u0C7F]/.test(text) ? "te-IN" : "en-IN";
+        speech.rate = 0.95;
+        speech.pitch = 1;
+
+        window.speechSynthesis.speak(speech);
+      });
+
+      content.appendChild(speakButton);
+    }
     const time = document.createElement("div");
     time.className = "message-time";
     time.textContent = currentTime();
