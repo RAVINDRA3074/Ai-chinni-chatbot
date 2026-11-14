@@ -517,28 +517,36 @@ h1 .gradient {
   line-height: 1.5;
   font-size: 13px;
 }
-#messageInput::placeholder { color: #647a98; }
-.send-btn {
-  width: 45px; height: 45px;
-  flex: 0 0 auto;
-  border: 0;
-  border-radius: 13px;
-  display: grid; place-items: center;
-  cursor: pointer;
-  color: #061221;
-  background: linear-gradient(135deg, #b1f1ff, #6acbff 60%, #9a93ff);
-  box-shadow: 0 0 20px rgba(82, 177, 255, .14);
-  transition: transform .2s, filter .2s;
-}
-.send-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
 .send-btn svg { width: 20px; height: 20px; }
-.composer-bottom {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 10px;
-  padding: 6px 10px 3px;
-  color: #627894;
-  font-size: 10px;
+
+/* MIC BUTTON CSS — HERE */
+.voice-btn {
+  width: 45px;
+  height: 45px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(106, 203, 255, .35);
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: #b1f1ff;
+  background: rgba(40, 100, 160, .18);
+  font-size: 20px;
+  transition: .2s;
 }
+
+.voice-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(70, 150, 220, .28);
+  box-shadow: 0 0 18px rgba(82, 177, 255, .2);
+}
+
+.voice-btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.composer-bottom {
 .composer-bottom strong { color: #8ba8c8; font-weight: 500; }
 .chat-footer {
   padding: 15px 12px 0;
