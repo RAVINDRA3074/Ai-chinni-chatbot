@@ -819,7 +819,9 @@ button {
         <p>● Online · Ready to help</p>
       </div>
 
-      <div class="heading-right">GEMINI AI</div>
+      <button type="button" id="voiceToggle" class="suggestion">
+  🔇 Voice OFF
+</button>
 
     </div>
 
@@ -905,7 +907,21 @@ button {
 
   let isReplying = false;
   let recognition = null;
-  let isListening = false;
+let voiceEnabled = false;
+
+const voiceToggle = document.getElementById("voiceToggle");
+
+voiceToggle.addEventListener("click", () => {
+  voiceEnabled = !voiceEnabled;
+
+  voiceToggle.textContent = voiceEnabled
+    ? "🔊 Voice ON"
+    : "🔇 Voice OFF";
+
+  if (!voiceEnabled) {
+    window.speechSynthesis.cancel();
+  }
+});
 
   // OPEN CHAT
   function openChat() {
@@ -1075,7 +1091,9 @@ button {
 
       addMessage(reply, "bot");
 
-      speakText(reply);
+   if (voiceEnabled) {
+  speakText(reply);
+}
 
     } catch (error) {
       hideTyping();
