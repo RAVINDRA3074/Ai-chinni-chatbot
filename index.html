@@ -1134,10 +1134,42 @@ if (SpeechRecognition && voiceButton) {
       speakButton.addEventListener("click", () => {
         window.speechSynthesis.cancel();
 
-        const speech = new SpeechSynthesisUtterance(text);
-        speech.lang = /[\u0C00-\u0C7F]/.test(text) ? "te-IN" : "en-IN";
-        speech.rate = 0.95;
-        speech.pitch = 1;
+const speech = new SpeechSynthesisUtterance(text);
+
+function setFemaleVoice() {
+  const voices = window.speechSynthesis.getVoices();
+  const isTelugu = /[\u0C00-\u0C7F]/.test(text);
+
+  let selectedVoice;
+
+  if (isTelugu) {
+    selectedVoice = voices.find(v =>
+      v.lang.toLowerCase().startsWith("te") &&
+      /female|woman/i.test(v.name)
+    );
+
+    if (!selectedVoice) {
+      selectedVoice = voices.find(v =>
+        v.lang.toLowerCase().startsWith("te")
+      );
+    }
+  } else {
+    selectedVoice = voices.find(v =>
+      v.lang.toLowerCase().startsWith("en") &&
+      /female|woman|zira|samantha/i.test(v.name)
+    );
+  }
+
+  if (selectedVoice) {
+    speech.voice = selectedVoice;
+  }
+
+  speech.lang = isTelugu ? "te-IN" : "en-IN";
+  speech.rate = 0.9;
+  speech.pitch = 1.2;
+}
+
+setFemaleVoice();
 
         window.speechSynthesis.speak(speech);
       });
