@@ -28,8 +28,12 @@ body {
   overflow: hidden;
   font-family: Arial, sans-serif;
   color: #fff;
-  background:
-    radial-gradient(ellipse at 50% 40%, #102b50 0%, #071326 40%, #030711 100%);
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    #102b50 0%,
+    #071326 40%,
+    #030711 100%
+  );
 }
 
 .screen {
@@ -43,8 +47,6 @@ body {
   display: flex;
 }
 
-/* STAR BACKGROUND */
-
 #stars {
   position: absolute;
   inset: 0;
@@ -54,17 +56,19 @@ body {
   pointer-events: none;
 }
 
-/* ROBOT LAYERS */
-
-.robot-background {
+.robot-background,
+.robot-foreground {
   position: absolute;
   inset: 0;
-  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
   overflow: hidden;
+}
+
+.robot-background {
+  z-index: 1;
 }
 
 .robot-background img {
@@ -77,22 +81,17 @@ body {
 }
 
 .robot-foreground {
-  position: absolute;
-  inset: 0;
   z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  overflow: hidden;
 }
 
 .robot-foreground img {
   width: min(76vw, 690px);
   height: 91vh;
   object-fit: contain;
-  filter: drop-shadow(0 0 35px rgba(67, 192, 255, .35));
-  animation: robotFloat 5s ease-in-out infinite;
+  filter: drop-shadow(0 0 35px rgba(67,192,255,.35));
+  transform-origin: 50% 55%;
+  animation: robotFloat 5s ease-in-out infinite,
+             robotGlow 4s ease-in-out infinite;
 }
 
 @keyframes robotFloat {
@@ -100,7 +99,16 @@ body {
   50% { transform: translateY(-10px); }
 }
 
-/* INTRO SCREEN */
+@keyframes robotGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 24px rgba(67,192,255,.24));
+  }
+  50% {
+    filter: drop-shadow(0 0 42px rgba(67,192,255,.52));
+  }
+}
+
+/* INTRO */
 
 #intro {
   align-items: center;
@@ -116,9 +124,21 @@ body {
   text-align: center;
   border: 1px solid var(--border);
   border-radius: 25px;
-  background: rgba(4, 14, 30, .78);
+  background: rgba(4,14,30,.78);
   backdrop-filter: blur(16px);
-  box-shadow: 0 0 45px rgba(45, 172, 255, .15);
+  box-shadow: 0 0 45px rgba(45,172,255,.15);
+  animation: panelAppear .8s ease both;
+}
+
+@keyframes panelAppear {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .logo {
@@ -130,9 +150,9 @@ body {
 }
 
 .intro-content h1 {
-  font-size: clamp(35px, 6vw, 55px);
+  font-size: clamp(35px,6vw,55px);
   margin-bottom: 10px;
-  background: linear-gradient(90deg, #fff, #69d9ff, #a99aff);
+  background: linear-gradient(90deg,#fff,#69d9ff,#a99aff);
   -webkit-background-clip: text;
   color: transparent;
 }
@@ -152,17 +172,17 @@ body {
   font-size: 15px;
   font-weight: bold;
   cursor: pointer;
-  background: linear-gradient(120deg, #65dfff, #a5f5ff);
-  box-shadow: 0 0 25px rgba(89, 220, 255, .4);
+  background: linear-gradient(120deg,#65dfff,#a5f5ff);
+  box-shadow: 0 0 25px rgba(89,220,255,.4);
   transition: .25s;
 }
 
 .start-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 35px rgba(89, 220, 255, .7);
+  box-shadow: 0 0 35px rgba(89,220,255,.7);
 }
 
-/* CHAT SCREEN */
+/* CHAT */
 
 #chatScreen {
   flex-direction: column;
@@ -175,7 +195,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 16px 22px;
-  background: rgba(3, 12, 27, .65);
+  background: rgba(3,12,27,.65);
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(14px);
 }
@@ -191,18 +211,26 @@ body {
   color: #7dffc2;
   font-size: 12px;
   margin-top: 5px;
+  animation: statusPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+  0%,100% { opacity: .75; }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 10px rgba(125,255,194,.45);
+  }
 }
 
 .voice-toggle {
   padding: 10px 14px;
   border-radius: 22px;
   border: 1px solid var(--border);
-  background: rgba(20, 49, 76, .8);
+  background: rgba(20,49,76,.8);
   color: #d9f6ff;
   cursor: pointer;
   font-size: 12px;
 }
-
 
 .chat-layout {
   position: relative;
@@ -215,8 +243,6 @@ body {
   padding: 12px;
 }
 
-
-
 .chat-panel {
   width: 100%;
   height: 100%;
@@ -224,9 +250,9 @@ body {
   flex-direction: column;
   border: 1px solid var(--border);
   border-radius: 20px;
-  background: rgba(3, 13, 29, .76);
+  background: rgba(3,13,29,.76);
   backdrop-filter: blur(17px);
-  box-shadow: 0 0 40px rgba(36, 151, 255, .12);
+  box-shadow: 0 0 40px rgba(36,151,255,.12);
   overflow: hidden;
 }
 
@@ -253,16 +279,30 @@ body {
   flex-direction: column;
   max-width: 90%;
   gap: 5px;
+  animation: messageIn .38s cubic-bezier(.2,.8,.2,1) both;
 }
 
 .message.user {
   align-self: flex-end;
   align-items: flex-end;
+  transform-origin: right bottom;
 }
 
 .message.bot {
   align-self: flex-start;
   align-items: flex-start;
+  transform-origin: left bottom;
+}
+
+@keyframes messageIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .message-label {
@@ -274,25 +314,59 @@ body {
 .message-bubble {
   padding: 12px 15px;
   border-radius: 16px;
-  background: rgba(34, 75, 111, .65);
-  border: 1px solid rgba(105, 217, 255, .18);
+  background: rgba(34,75,111,.65);
+  border: 1px solid rgba(105,217,255,.18);
   color: #e7f5ff;
   font-size: 14px;
   line-height: 1.6;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+  transition: .25s;
+}
+
+.message-bubble:hover {
+  border-color: rgba(105,217,255,.48);
+  box-shadow: 0 0 18px rgba(60,180,255,.12);
 }
 
 .message.user .message-bubble {
-  background: linear-gradient(135deg, #17628b, #344d91);
-  border-color: rgba(130, 220, 255, .35);
+  background: linear-gradient(135deg,#17628b,#344d91);
+  border-color: rgba(130,220,255,.35);
 }
+
+/* THINKING ANIMATION */
 
 .typing {
   color: #8bcde9;
   font-size: 12px;
-  padding: 5px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: fit-content;
+  padding: 10px 14px;
+  border: 1px solid rgba(105,217,255,.2);
+  border-radius: 14px;
+  background: rgba(20,55,85,.55);
+  animation: messageIn .25s ease both;
 }
+
+.typing::after {
+  content: '';
+  width: 22px;
+  height: 6px;
+  display: inline-block;
+  background: radial-gradient(
+    circle,#9af3ff 2px,transparent 2.5px
+  ) 0 50% / 8px 6px repeat-x;
+  animation: typingDots .9s steps(3,end) infinite;
+}
+
+@keyframes typingDots {
+  from { background-position: 0 50%; }
+  to { background-position: 24px 50%; }
+}
+
+/* QUICK PROMPTS */
 
 .quick-prompts {
   display: flex;
@@ -307,10 +381,12 @@ body {
   border-radius: 18px;
   padding: 8px 12px;
   color: #bfeeff;
-  background: rgba(23, 56, 83, .6);
+  background: rgba(23,56,83,.6);
   cursor: pointer;
   font-size: 11px;
 }
+
+/* MESSAGE INPUT */
 
 .composer {
   display: flex;
@@ -318,7 +394,7 @@ body {
   gap: 8px;
   padding: 12px;
   border-top: 1px solid var(--border);
-  background: rgba(3, 12, 27, .85);
+  background: rgba(3,12,27,.85);
 }
 
 #messageInput {
@@ -326,12 +402,18 @@ body {
   min-width: 0;
   height: 46px;
   padding: 0 14px;
-  border: 1px solid rgba(105, 217, 255, .22);
+  border: 1px solid rgba(105,217,255,.22);
   border-radius: 14px;
   outline: none;
   color: white;
-  background: rgba(18, 39, 63, .85);
+  background: rgba(18,39,63,.85);
   font-size: 14px;
+}
+
+#messageInput:focus {
+  border-color: rgba(105,217,255,.7);
+  box-shadow: 0 0 0 3px rgba(105,217,255,.09),
+              0 0 18px rgba(45,172,255,.12);
 }
 
 #messageInput::placeholder {
@@ -347,7 +429,7 @@ body {
   cursor: pointer;
   font-size: 18px;
   color: #04111f;
-  background: linear-gradient(135deg, #69d9ff, #a0f3ff);
+  background: linear-gradient(135deg,#69d9ff,#a0f3ff);
 }
 
 .action-btn:disabled {
@@ -362,7 +444,36 @@ body {
   font-size: 10px;
 }
 
-@media (max-width: 700px) {
+/* BUTTON ANIMATIONS */
+
+.start-btn,
+.action-btn,
+.voice-toggle,
+.quick-prompt {
+  transition: transform .2s ease,
+              box-shadow .25s ease,
+              filter .25s ease;
+}
+
+.start-btn:hover,
+.action-btn:hover,
+.voice-toggle:hover,
+.quick-prompt:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow: 0 0 22px rgba(89,220,255,.24);
+}
+
+.start-btn:active,
+.action-btn:active,
+.voice-toggle:active,
+.quick-prompt:active {
+  transform: scale(.97);
+}
+
+/* MOBILE */
+
+@media (max-width:700px) {
   .robot-foreground img {
     width: 100vw;
     height: 72vh;
@@ -379,7 +490,7 @@ body {
     margin: auto 5% 5%;
     width: 90%;
     padding: 22px;
-    background: rgba(4, 14, 30, .82);
+    background: rgba(4,14,30,.82);
   }
 
   .chat-layout {
@@ -388,11 +499,22 @@ body {
 
   .chat-panel {
     width: 100%;
-    background: rgba(3, 13, 29, .82);
+    background: rgba(3,13,29,.82);
   }
 
   .chat-top {
     padding: 13px;
+  }
+}
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
   }
 }
 </style>
@@ -402,7 +524,7 @@ body {
 
 <canvas id="stars"></canvas>
 
-<!-- MAIN INTRO SCREEN -->
+<!-- INTRO SCREEN -->
 
 <section id="intro" class="screen active">
 
@@ -419,11 +541,13 @@ body {
   <div class="intro-content">
     <div class="logo">YOUR PERSONAL AI</div>
     <h1>CHINNI AI</h1>
+
     <p>
       Beyond Imagination.<br>
       Your intelligent AI companion is ready.<br>
       Talk, explore and create with Chinni.
     </p>
+
     <button class="start-btn" id="startBtn">
       ✦ Start Chatting
     </button>
@@ -457,6 +581,7 @@ body {
   </header>
 
   <main class="chat-layout">
+
     <div class="chat-panel">
 
       <div class="chat-heading">
@@ -464,27 +589,37 @@ body {
       </div>
 
       <div class="messages" id="messages">
+
         <div class="message bot">
           <span class="message-label">CHINNI</span>
           <div class="message-bubble">
             Hi! I'm Chinni. 😊 How can I help you today?
           </div>
         </div>
+
       </div>
 
       <div class="quick-prompts">
-        <button class="quick-prompt" data-prompt="Hi Chinni!">
+
+        <button class="quick-prompt"
+                data-prompt="Hi Chinni!">
           👋 Say Hi
         </button>
-        <button class="quick-prompt" data-prompt="Tell me a joke">
+
+        <button class="quick-prompt"
+                data-prompt="Tell me a joke">
           😂 Tell a joke
         </button>
-        <button class="quick-prompt" data-prompt="What can you do?">
+
+        <button class="quick-prompt"
+                data-prompt="What can you do?">
           ✨ Your abilities
         </button>
+
       </div>
 
       <div class="composer">
+
         <button class="action-btn" id="micBtn"
                 title="Speak">🎙️</button>
 
@@ -495,6 +630,7 @@ body {
 
         <button class="action-btn" id="sendBtn"
                 title="Send">➤</button>
+
       </div>
 
       <div class="footer-note">
@@ -502,11 +638,13 @@ body {
       </div>
 
     </div>
+
   </main>
 
 </section>
 
 <script>
+
 /* ELEMENTS */
 
 const intro = document.getElementById("intro");
@@ -539,6 +677,7 @@ startBtn.addEventListener("click", openChat);
 /* ADD MESSAGE */
 
 function addMessage(text, sender) {
+
   const message = document.createElement("div");
   message.className = "message " + sender;
 
@@ -552,9 +691,11 @@ function addMessage(text, sender) {
 
   message.appendChild(label);
   message.appendChild(bubble);
+
   messages.appendChild(message);
 
   scrollMessages();
+
   return bubble;
 }
 
@@ -567,42 +708,56 @@ function scrollMessages() {
 /* TYPING INDICATOR */
 
 function showTyping() {
+
   const typing = document.createElement("div");
+
   typing.className = "typing";
   typing.id = "typingIndicator";
-  typing.textContent = "Chinni is thinking...";
+  typing.textContent = "Chinni is thinking";
+
   messages.appendChild(typing);
+
   scrollMessages();
 }
 
 function hideTyping() {
+
   const typing = document.getElementById("typingIndicator");
+
   if (typing) typing.remove();
 }
 
 /* SEND MESSAGE TO GEMINI */
 
 async function sendMessage(text) {
+
   text = text.trim();
 
   if (!text || isReplying) return;
 
   addMessage(text, "user");
+
   messageInput.value = "";
 
   isReplying = true;
   sendBtn.disabled = true;
+
   showTyping();
 
   try {
+
     const response = await fetch(BACKEND_URL, {
+
       method: "POST",
+
       headers: {
         "Content-Type": "application/json"
       },
+
       body: JSON.stringify({
         message: text
       })
+
     });
 
     if (!response.ok) {
@@ -616,6 +771,7 @@ async function sendMessage(text) {
     }
 
     hideTyping();
+
     addMessage(data.reply, "bot");
 
     if (voiceEnabled) {
@@ -623,6 +779,7 @@ async function sendMessage(text) {
     }
 
   } catch (error) {
+
     hideTyping();
 
     addMessage(
@@ -633,9 +790,11 @@ async function sendMessage(text) {
     console.error("Chinni error:", error);
 
   } finally {
+
     isReplying = false;
     sendBtn.disabled = false;
     messageInput.focus();
+
   }
 }
 
@@ -648,22 +807,27 @@ sendBtn.addEventListener("click", () => {
 /* ENTER KEY */
 
 messageInput.addEventListener("keydown", (event) => {
+
   if (event.key === "Enter") {
     sendMessage(messageInput.value);
   }
+
 });
 
 /* QUICK PROMPTS */
 
 document.querySelectorAll(".quick-prompt").forEach(button => {
+
   button.addEventListener("click", () => {
     sendMessage(button.dataset.prompt);
   });
+
 });
 
 /* VOICE OUTPUT */
 
 voiceToggle.addEventListener("click", () => {
+
   voiceEnabled = !voiceEnabled;
 
   if (!voiceEnabled) {
@@ -673,9 +837,11 @@ voiceToggle.addEventListener("click", () => {
   voiceToggle.textContent = voiceEnabled
     ? "🔊 Voice ON"
     : "🔇 Voice OFF";
+
 });
 
 function speakText(text) {
+
   if (!("speechSynthesis" in window)) return;
 
   speechSynthesis.cancel();
@@ -694,22 +860,28 @@ function speakText(text) {
   let selectedVoice = null;
 
   if (isTelugu) {
+
     selectedVoice = voices.find(v =>
       v.lang.toLowerCase().startsWith("te")
     );
+
   }
 
   if (!selectedVoice) {
+
     selectedVoice = voices.find(v =>
       v.lang.toLowerCase().startsWith("en-in") &&
       /female|heera/i.test(v.name)
     );
+
   }
 
   if (!selectedVoice) {
+
     selectedVoice = voices.find(v =>
       v.lang.toLowerCase().startsWith("en-in")
     );
+
   }
 
   if (selectedVoice) {
@@ -717,6 +889,7 @@ function speakText(text) {
   }
 
   speechSynthesis.speak(speech);
+
 }
 
 /* MICROPHONE INPUT */
@@ -728,43 +901,60 @@ const SpeechRecognition =
 let recognition = null;
 
 if (SpeechRecognition) {
+
   recognition = new SpeechRecognition();
+
   recognition.lang = "te-IN";
   recognition.continuous = false;
   recognition.interimResults = false;
 
   recognition.onstart = () => {
+
     isListening = true;
     micBtn.textContent = "🔴";
+
   };
 
   recognition.onend = () => {
+
     isListening = false;
     micBtn.textContent = "🎙️";
+
   };
 
   recognition.onresult = (event) => {
+
     const transcript =
       event.results[0][0].transcript;
 
     messageInput.value = transcript;
+
     sendMessage(transcript);
+
   };
 
   recognition.onerror = (event) => {
+
     console.error("Microphone error:", event.error);
+
     isListening = false;
     micBtn.textContent = "🎙️";
+
   };
+
 }
 
 micBtn.addEventListener("click", () => {
+
   if (!recognition) {
+
     addMessage(
       "Your browser does not support voice recognition. Please use Chrome.",
       "bot"
     );
+
     return;
+
   }
 
   if (isListening) {
@@ -772,6 +962,7 @@ micBtn.addEventListener("click", () => {
   } else {
     recognition.start();
   }
+
 });
 
 /* STAR ANIMATION */
@@ -782,9 +973,9 @@ const ctx = canvas.getContext("2d");
 let stars = [];
 let width = 0;
 let height = 0;
-let animationFrame = 0;
 
 function resizeCanvas() {
+
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
 
@@ -796,28 +987,38 @@ function resizeCanvas() {
   );
 
   for (let i = 0; i < count; i++) {
+
     stars.push({
+
       x: Math.random() * width,
       y: Math.random() * height,
       size: Math.random() * 1.5 + .3,
       speed: Math.random() * .35 + .08,
       alpha: Math.random() * .7 + .2
+
     });
+
   }
+
 }
 
 function animateStars() {
+
   ctx.clearRect(0, 0, width, height);
 
   stars.forEach(star => {
+
     star.y -= star.speed;
 
     if (star.y < 0) {
+
       star.y = height;
       star.x = Math.random() * width;
+
     }
 
     ctx.beginPath();
+
     ctx.arc(
       star.x,
       star.y,
@@ -827,12 +1028,14 @@ function animateStars() {
     );
 
     ctx.fillStyle =
-      `rgba(140, 220, 255, ${star.alpha})`;
+      `rgba(140,220,255,${star.alpha})`;
 
     ctx.fill();
+
   });
 
-  animationFrame = requestAnimationFrame(animateStars);
+  requestAnimationFrame(animateStars);
+
 }
 
 window.addEventListener("resize", resizeCanvas);
@@ -843,10 +1046,13 @@ animateStars();
 /* PAGE VISIBILITY */
 
 document.addEventListener("visibilitychange", () => {
+
   if (!document.hidden) {
     scrollMessages();
   }
+
 });
+
 </script>
 
 </body>
