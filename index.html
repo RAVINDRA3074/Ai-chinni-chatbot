@@ -1,440 +1,672 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#050914">
-<title>Chinni AI 2.0</title>
+<title>Chinni AI 2.0 — Beyond Imagination</title>
 
 <style>
 :root {
-  --cyan: #80eaff;
-  --blue: #319fff;
-  --glass: rgba(5,20,42,.62);
-  --border: rgba(105,217,255,.3);
+  --bg: #050914;
+  --blue: #69d9ff;
+  --cyan: #9af3ff;
+  --purple: #927bff;
+  --glass: rgba(8, 22, 43, .72);
+  --border: rgba(105, 217, 255, .25);
 }
-* { box-sizing:border-box; margin:0; padding:0; }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
-  min-height:100vh;
-  overflow:hidden;
-  font-family:Arial,sans-serif;
-  color:white;
-  background:radial-gradient(ellipse at 45% 40%,#123b68,#071326 55%,#020611);
-}
-
-#stars {
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  pointer-events:none;
-  z-index:0;
+  min-height: 100vh;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  background:
+    radial-gradient(ellipse at 50% 40%, #102b50 0%, #071326 40%, #030711 100%);
 }
 
 .screen {
-  position:fixed;
-  inset:0;
-  display:none;
-  overflow:hidden;
+  position: fixed;
+  inset: 0;
+  display: none;
+  overflow: hidden;
 }
-.screen.active { display:flex; }
 
-.robot-background {
-  position:absolute;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:0;
-  pointer-events:none;
+.screen.active {
+  display: flex;
 }
+
+/* STAR BACKGROUND */
+#stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ROBOT LAYERS */
+.robot-background {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
 .robot-background img {
-  width:min(90vw,850px);
-  height:95vh;
-  object-fit:contain;
-  opacity:.13;
-  filter:blur(9px);
+  width: min(90vw, 850px);
+  height: 95vh;
+  object-fit: contain;
+  opacity: .13;
+  filter: blur(9px) brightness(.65);
+  transform: scale(1.12);
 }
 
 .robot-foreground {
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  pointer-events:none;
-  z-index:1;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
 }
+
 .robot-foreground img {
-  width:min(72vw,760px);
-  height:90vh;
-  object-fit:contain;
-  filter:drop-shadow(0 0 35px rgba(65,190,255,.45));
-  animation:robotFloat 5s ease-in-out infinite, robotGlow 4s ease-in-out infinite;
+  width: min(76vw, 690px);
+  height: 91vh;
+  object-fit: contain;
+  filter: drop-shadow(0 0 35px rgba(67, 192, 255, .35));
+  animation: robotFloat 5s ease-in-out infinite;
 }
 
 @keyframes robotFloat {
-  0%,100% { transform:translateY(0); }
-  50% { transform:translateY(-12px); }
-}
-@keyframes robotGlow {
-  0%,100% { filter:drop-shadow(0 0 22px rgba(65,190,255,.25)); }
-  50% { filter:drop-shadow(0 0 48px rgba(65,190,255,.65)); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
-/* INTRO */
-
+/* INTRO SCREEN */
 #intro {
-  align-items:center;
-  justify-content:center;
+  align-items: center;
+  justify-content: center;
 }
 
 .intro-content {
-  position:relative;
-  z-index:4;
-  width:min(90%,420px);
-  margin:auto 5% 5% auto;
-  padding:30px;
-  text-align:center;
-  border:1px solid var(--border);
-  border-radius:26px;
-  background:rgba(3,14,31,.78);
-  backdrop-filter:blur(18px);
-  box-shadow:0 0 55px rgba(35,160,255,.2);
-  animation:appear .8s ease both;
+  position: relative;
+  z-index: 5;
+  width: min(90%, 440px);
+  margin: auto 5% 5% auto;
+  padding: 28px;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: 25px;
+  background: rgba(4, 14, 30, .78);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 0 45px rgba(45, 172, 255, .15);
 }
 
 .logo {
-  color:var(--cyan);
-  letter-spacing:5px;
-  font-size:12px;
-  margin-bottom:15px;
+  color: var(--cyan);
+  font-size: 14px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
 }
+
 .intro-content h1 {
-  font-size:clamp(38px,6vw,58px);
-  margin-bottom:12px;
-  background:linear-gradient(90deg,#fff,#65dfff,#a99aff);
-  background-clip:text;
-  -webkit-background-clip:text;
-  color:transparent;
+  font-size: clamp(35px, 6vw, 55px);
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, #fff, #69d9ff, #a99aff);
+  -webkit-background-clip: text;
+  color: transparent;
 }
+
 .intro-content p {
-  color:#c0d9ee;
-  line-height:1.8;
-  font-size:14px;
+  color: #b5cce5;
+  font-size: 14px;
+  line-height: 1.7;
 }
+
 .start-btn {
-  margin-top:25px;
-  padding:15px 34px;
-  border:0;
-  border-radius:30px;
-  color:#031323;
-  font-weight:bold;
-  font-size:15px;
-  cursor:pointer;
-  background:linear-gradient(120deg,#65dfff,#b2f7ff);
-  box-shadow:0 0 25px rgba(89,220,255,.4);
-  transition:.25s;
+  margin-top: 24px;
+  padding: 14px 32px;
+  border: 0;
+  border-radius: 30px;
+  color: #04111f;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  background: linear-gradient(120deg, #65dfff, #a5f5ff);
+  box-shadow: 0 0 25px rgba(89, 220, 255, .4);
+  transition: .25s;
 }
+
 .start-btn:hover {
-  transform:scale(1.06);
-  box-shadow:0 0 40px rgba(89,220,255,.7);
+  transform: scale(1.05);
+  box-shadow: 0 0 35px rgba(89, 220, 255, .7);
 }
 
 /* CHAT SCREEN */
-
 #chatScreen {
-  flex-direction:column;
-  isolation:isolate;
-}
-#chatScreen .robot-background { z-index:0; }
-#chatScreen .robot-foreground {
-  z-index:1;
-  justify-content:flex-start;
-  padding-left:2vw;
+  flex-direction: column;
 }
 
 .chat-top {
-  position:relative;
-  z-index:5;
-  flex:0 0 auto;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:17px 25px;
-  background:linear-gradient(180deg,rgba(2,10,24,.8),rgba(2,10,24,.2));
-  border-bottom:1px solid rgba(105,217,255,.16);
-  backdrop-filter:blur(10px);
+  position: relative;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 22px;
+  background: rgba(3, 12, 27, .65);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(14px);
 }
+
 .chat-brand {
-  color:var(--cyan);
-  font-size:22px;
-  font-weight:bold;
-  letter-spacing:3px;
+  color: var(--cyan);
+  font-size: 21px;
+  font-weight: bold;
+  letter-spacing: 2px;
 }
+
 .status {
-  color:#7dffc2;
-  font-size:12px;
-  margin-top:5px;
+  color: #7dffc2;
+  font-size: 12px;
+  margin-top: 5px;
 }
+
 .voice-toggle {
-  padding:10px 15px;
-  border:1px solid var(--border);
-  border-radius:25px;
-  color:#d9f6ff;
-  background:rgba(20,49,76,.8);
-  cursor:pointer;
+  padding: 10px 14px;
+  border-radius: 22px;
+  border: 1px solid var(--border);
+  background: rgba(20, 49, 76, .8);
+  color: #d9f6ff;
+  cursor: pointer;
+  font-size: 12px;
 }
 
 .chat-layout {
-  position:relative;
-  z-index:4;
-  flex:1;
-  min-height:0;
-  width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:flex-end;
-  padding:15px 4vw 20px 0;
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  justify-content: center;
+  padding: 12px;
 }
 
 .chat-panel {
-  width:min(430px,38vw);
-  height:min(77vh,760px);
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-  border:1px solid rgba(119,220,255,.38);
-  border-radius:26px;
-  background:rgba(4,16,34,.48);
-  backdrop-filter:blur(15px) saturate(140%);
-  box-shadow:0 18px 70px rgba(0,0,0,.3),0 0 45px rgba(36,151,255,.17);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: rgba(3, 13, 29, .76);
+  backdrop-filter: blur(17px);
+  box-shadow: 0 0 40px rgba(36, 151, 255, .12);
+  overflow: hidden;
 }
 
 .chat-heading {
-  padding:17px;
-  color:var(--cyan);
-  font-size:15px;
-  border-bottom:1px solid rgba(105,217,255,.18);
-  background:rgba(7,26,49,.35);
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--cyan);
+  font-size: 15px;
 }
 
 .messages {
-  flex:1;
-  min-height:0;
-  overflow-y:auto;
-  padding:16px;
-  display:flex;
-  flex-direction:column;
-  gap:13px;
-  scroll-behavior:smooth;
-  scrollbar-width:thin;
-  scrollbar-color:rgba(105,217,255,.4) transparent;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  scroll-behavior: smooth;
 }
 
 .message {
-  display:flex;
-  flex-direction:column;
-  max-width:90%;
-  gap:5px;
-  animation:messageIn .35s ease both;
-}
-.message.user {
-  align-self:flex-end;
-  align-items:flex-end;
-}
-.message.bot {
-  align-self:flex-start;
-  align-items:flex-start;
-}
-.message-label {
-  color:#80cfff;
-  font-size:10px;
-  letter-spacing:1px;
-}
-.message-bubble {
-  padding:12px 15px;
-  border-radius:17px;
-  background:rgba(20,54,83,.82);
-  border:1px solid rgba(105,217,255,.25);
-  color:#e7f5ff;
-  font-size:14px;
-  line-height:1.6;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-}
-.message.user .message-bubble {
-  background:linear-gradient(135deg,rgba(23,98,139,.96),rgba(52,77,145,.95));
-  border-color:rgba(130,220,255,.4);
+  display: flex;
+  flex-direction: column;
+  max-width: 90%;
+  gap: 5px;
 }
 
-@keyframes messageIn {
-  from { opacity:0; transform:translateY(12px); }
-  to { opacity:1; transform:translateY(0); }
+.message.user {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.message.bot {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.message-label {
+  color: #80cfff;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.message-bubble {
+  padding: 12px 15px;
+  border-radius: 16px;
+  background: rgba(34, 75, 111, .65);
+  border: 1px solid rgba(105, 217, 255, .18);
+  color: #e7f5ff;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.message.user .message-bubble {
+  background: linear-gradient(135deg, #17628b, #344d91);
+  border-color: rgba(130, 220, 255, .35);
 }
 
 .typing {
-  display:flex;
-  align-items:center;
-  gap:9px;
-  width:fit-content;
-  padding:10px 14px;
-  border:1px solid var(--border);
-  border-radius:15px;
-  color:#9deaff;
-  background:rgba(20,55,85,.65);
-  font-size:12px;
-}
-.typing::after {
-  content:"";
-  width:24px;
-  height:7px;
-  background:radial-gradient(circle,#9af3ff 2px,transparent 3px) 0 50%/8px 7px repeat-x;
-  animation:dots .8s steps(3) infinite;
-}
-@keyframes dots {
-  to { background-position:24px 50%; }
+  color: #8bcde9;
+  font-size: 12px;
+  padding: 5px;
 }
 
 .quick-prompts {
-  display:flex;
-  gap:7px;
-  padding:10px;
-  overflow-x:auto;
+  display: flex;
+  gap: 7px;
+  padding: 10px 12px;
+  overflow-x: auto;
 }
+
 .quick-prompt {
-  flex:0 0 auto;
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:8px 12px;
-  color:#bfeeff;
-  background:rgba(23,56,83,.65);
-  cursor:pointer;
-  font-size:11px;
+  flex: 0 0 auto;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 8px 12px;
+  color: #bfeeff;
+  background: rgba(23, 56, 83, .6);
+  cursor: pointer;
+  font-size: 11px;
 }
 
 .composer {
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:11px;
-  border-top:1px solid rgba(105,217,255,.2);
-  background:rgba(3,12,27,.48);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--border);
+  background: rgba(3, 12, 27, .85);
 }
+
 #messageInput {
-  flex:1;
-  min-width:0;
-  height:45px;
-  padding:0 14px;
-  border:1px solid rgba(105,217,255,.25);
-  border-radius:14px;
-  outline:none;
-  color:white;
-  background:rgba(9,25,46,.88);
-  font-size:14px;
+  flex: 1;
+  min-width: 0;
+  height: 46px;
+  padding: 0 14px;
+  border: 1px solid rgba(105, 217, 255, .22);
+  border-radius: 14px;
+  outline: none;
+  color: white;
+  background: rgba(18, 39, 63, .85);
+  font-size: 14px;
 }
-#messageInput::placeholder { color:#7895b0; }
-#messageInput:focus {
-  border-color:#69d9ff;
-  box-shadow:0 0 15px rgba(45,172,255,.2);
+
+#messageInput::placeholder {
+  color: #7895b0;
 }
+
 .action-btn {
-  flex:0 0 auto;
-  width:44px;
-  height:44px;
-  border:0;
-  border-radius:13px;
-  color:#04111f;
-  background:linear-gradient(135deg,#69d9ff,#a0f3ff);
-  cursor:pointer;
-  font-size:18px;
-  transition:.2s;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 13px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #04111f;
+  background: linear-gradient(135deg, #69d9ff, #a0f3ff);
 }
-.action-btn:hover { transform:translateY(-2px); }
-.action-btn:disabled { opacity:.5; cursor:not-allowed; }
+
+.action-btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
 .footer-note {
-  padding:0 10px 9px;
-  text-align:center;
-  color:#7895b0;
-  font-size:10px;
-  background:rgba(3,12,27,.3);
+  padding: 0 12px 10px;
+  text-align: center;
+  color: #617d98;
+  font-size: 10px;
 }
-
-.voice-toggle:hover,.quick-prompt:hover {
-  box-shadow:0 0 15px rgba(89,220,255,.25);
-}
-.status { animation:pulse 2s infinite; }
-@keyframes pulse {
-  50% { opacity:.6; }
-}
-
-/* MOBILE DESIGN */
-
-@media(max-width:760px) {
-  .robot-foreground {
-    justify-content:center !important;
-    padding:0 !important;
-    align-items:flex-start;
-  }
+  @media (max-width: 700px) {
   .robot-foreground img {
-    width:100vw;
-    height:62vh;
-    object-position:center top;
+    width: 100vw;
+    height: 72vh;
+    object-position: center;
+    opacity: .88;
   }
+
+  .robot-background img {
+    width: 115vw;
+    height: 80vh;
+  }
+
   .intro-content {
-    width:90%;
-    margin:auto 5% 5%;
-    padding:22px;
+    margin: auto 5% 5%;
+    width: 90%;
+    padding: 22px;
+    background: rgba(4, 14, 30, .82);
   }
-  .chat-top { padding:12px 14px; }
-  .chat-brand { font-size:18px; }
+
   .chat-layout {
-    align-items:flex-end;
-    justify-content:center;
-    padding:0 10px max(9px,env(safe-area-inset-bottom));
+    padding: 10px;
   }
+
   .chat-panel {
-    width:100%;
-    height:56vh;
-    max-height:570px;
-    border-radius:22px;
-    background:rgba(4,16,34,.76);
-    backdrop-filter:blur(16px);
+    width: 100%;
+    background: rgba(3, 13, 29, .82);
   }
-  .chat-heading { padding:11px 13px; }
-  .messages { padding:11px; gap:9px; }
-  .message { max-width:94%; }
-  .message-bubble { font-size:13px; padding:10px 12px; }
-  .quick-prompts { padding:7px 9px; }
-  .composer { padding:8px; gap:6px; }
-  .action-btn { width:40px; height:40px; }
-  #messageInput { height:42px; }
+
+  .chat-top {
+    padding: 13px;
+  }
 }
-@keyframes appear {
-  from { opacity:0; transform:translateY(20px); }
-  to { opacity:1; transform:translateY(0); }
+
+/* CHINNI AI 2.0 - LIGHTWEIGHT INTERFACE ANIMATIONS */
+.robot-foreground img {
+  transform-origin: 50% 55%;
+  will-change: transform, filter;
+  animation: robotFloat 5s ease-in-out infinite, robotGlow 4s ease-in-out infinite;
 }
-@media(prefers-reduced-motion:reduce) {
-  *,*::before,*::after {
-    animation-duration:.01ms !important;
-    transition-duration:.01ms !important;
+
+@keyframes robotGlow {
+  0%, 100% { filter: drop-shadow(0 0 24px rgba(67,192,255,.24)); }
+  50% { filter: drop-shadow(0 0 42px rgba(67,192,255,.52)); }
+}
+
+.intro-content {
+  animation: panelAppear .8s cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes panelAppear {
+  from { opacity: 0; transform: translateY(18px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.message {
+  animation: messageIn .38s cubic-bezier(.2,.8,.2,1) both;
+}
+.message.user { transform-origin: right bottom; }
+.message.bot { transform-origin: left bottom; }
+
+@keyframes messageIn {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.message-bubble {
+  transition: border-color .25s ease, box-shadow .25s ease, background .25s ease;
+}
+
+.message-bubble:hover {
+  border-color: rgba(105,217,255,.48);
+  box-shadow: 0 0 18px rgba(60,180,255,.12);
+}
+
+.typing {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: fit-content;
+  padding: 10px 14px;
+  border: 1px solid rgba(105,217,255,.2);
+  border-radius: 14px;
+  background: rgba(20,55,85,.55);
+  animation: messageIn .25s ease both;
+}
+
+.typing::after {
+  content: '';
+  width: 22px;
+  height: 6px;
+  display: inline-block;
+  background: radial-gradient(circle, #9af3ff 2px, transparent 2.5px) 0 50% / 8px 6px repeat-x;
+  animation: typingDots .9s steps(3,end) infinite;
+}
+
+@keyframes typingDots {
+  from { background-position: 0 50%; }
+  to { background-position: 24px 50%; }
+}
+
+.start-btn, .action-btn, .voice-toggle, .quick-prompt {
+  transition: transform .2s ease, box-shadow .25s ease, filter .25s ease;
+}
+
+.start-btn:hover, .action-btn:hover, .voice-toggle:hover, .quick-prompt:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow: 0 0 22px rgba(89,220,255,.24);
+}
+
+.start-btn:active, .action-btn:active, .voice-toggle:active, .quick-prompt:active {
+  transform: scale(.97);
+}
+
+#messageInput:focus {
+  border-color: rgba(105,217,255,.7);
+  box-shadow: 0 0 0 3px rgba(105,217,255,.09), 0 0 18px rgba(45,172,255,.12);
+}
+
+.status { animation: statusPulse 2.4s ease-in-out infinite; }
+
+@keyframes statusPulse {
+  0%, 100% { opacity: .75; }
+  50% { opacity: 1; text-shadow: 0 0 10px rgba(125,255,194,.45); }
+}
+
+/* Keep motion comfortable for visitors who request reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* CHINNI 2.0 LAYOUT FIX: keep the avatar visible beside floating chat */
+#chatScreen { isolation: isolate; }
+#chatScreen .robot-background { z-index: 0; opacity: .65; }
+
+#chatScreen .robot-foreground {
+  z-index: 1;
+  justify-content: flex-start;
+  padding-left: 2vw;
+}
+
+#chatScreen .robot-foreground img {
+  width: min(67vw, 820px);
+  height: 88vh;
+  object-fit: contain;
+  opacity: .98;
+  transform: translateX(0);
+}
+
+#chatScreen .chat-top {
+  z-index: 6;
+  flex: 0 0 auto;
+  background: linear-gradient(180deg, rgba(3,12,27,.72), rgba(3,12,27,.22));
+  border-bottom-color: rgba(105,217,255,.14);
+}
+
+#chatScreen .chat-layout {
+  z-index: 5;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 18px clamp(18px, 3vw, 48px) 22px 0;
+}
+
+#chatScreen .chat-panel {
+  width: min(430px, 38vw);
+  height: min(76vh, 760px);
+  flex: 0 0 auto;
+  background: rgba(4, 16, 34, .43);
+  border: 1px solid rgba(119,220,255,.34);
+  border-radius: 26px;
+  backdrop-filter: blur(13px) saturate(135%);
+  -webkit-backdrop-filter: blur(13px) saturate(135%);
+  box-shadow: 0 18px 70px rgba(0,0,0,.28), 0 0 42px rgba(36,151,255,.16);
+}
+
+#chatScreen .chat-heading {
+  background: rgba(7, 26, 49, .32);
+  border-bottom-color: rgba(105,217,255,.15);
+}
+
+#chatScreen .messages {
+  background: transparent;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(105,217,255,.35) transparent;
+}
+
+#chatScreen .message-bubble {
+  background: rgba(20, 54, 83, .76);
+  border-color: rgba(105,217,255,.25);
+  box-shadow: 0 6px 20px rgba(0,0,0,.12);
+}
+
+#chatScreen .message.user .message-bubble {
+  background: linear-gradient(135deg, rgba(23,98,139,.94), rgba(52,77,145,.92));
+}
+
+#chatScreen .quick-prompts,
+#chatScreen .composer,
+#chatScreen .footer-note {
+  background: rgba(3, 12, 27, .36);
+}
+
+#chatScreen .composer { border-top-color: rgba(105,217,255,.18); }
+#chatScreen #messageInput { background: rgba(9,25,46,.82); }
+
+@media (max-width: 760px) {
+  #chatScreen .chat-top { padding: 11px 14px; }
+  #chatScreen .chat-brand { font-size: 17px; }
+
+  #chatScreen .robot-foreground {
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0;
+  }
+
+  #chatScreen .robot-foreground img {
+    width: 100vw;
+    height: 58vh;
+    object-fit: contain;
+    object-position: center top;
+    opacity: .9;
+  }
+
+  #chatScreen .chat-layout {
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0 10px max(9px, env(safe-area-inset-bottom));
+  }
+
+  #chatScreen .chat-panel {
+    width: 100%;
+    height: 55vh;
+    max-height: 560px;
+    border-radius: 22px;
+    background: rgba(4, 16, 34, .72);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+
+  #chatScreen .chat-heading { padding: 10px 13px; }
+  #chatScreen .messages { padding: 11px; gap: 9px; }
+  #chatScreen .message { max-width: 94%; }
+  #chatScreen .message-bubble { font-size: 13px; padding: 10px 12px; }
+  #chatScreen .quick-prompts { padding: 7px 9px; }
+  #chatScreen .composer { padding: 8px; gap: 6px; }
+  #chatScreen .action-btn { width: 40px; height: 40px; }
+  #chatScreen #messageInput { height: 42px; }
+  #chatScreen .footer-note { padding-bottom: 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #chatScreen .robot-foreground img { animation: none !important; }
+}
+
+/* CHINNI AI 2.0 - SAFE VISUAL POLISH */
+:root {
+  color-scheme: dark;
+}
+
+#intro .robot-foreground img,
+#chatScreen .robot-foreground img {
+  object-position: center center;
+}
+
+#intro .robot-foreground img {
+  filter: drop-shadow(0 0 28px rgba(105,217,255,.38))
+          drop-shadow(0 12px 32px rgba(0,0,0,.28));
+}
+
+#chatScreen .robot-foreground img {
+  filter: drop-shadow(0 0 32px rgba(105,217,255,.32));
+}
+
+.chat-top, .chat-panel, .intro-content {
+  -webkit-backdrop-filter: blur(16px) saturate(135%);
+}
+
+#messageInput:focus-visible,
+button:focus-visible {
+  outline: 2px solid rgba(154,243,255,.9);
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  #chatScreen .robot-foreground img {
+    max-width: 100%;
   }
 }
 </style>
 </head>
 
 <body>
+
 <canvas id="stars"></canvas>
 
+<!-- MAIN INTRO SCREEN -->
 <section id="intro" class="screen active">
+
   <div class="robot-background">
-    <img src="chinni-realistic-avatar.jpg" alt="Chinni background">
+    <img src="chinni-realistic-avatar.jpg"
+         alt="Chinni background humanoid">
   </div>
+
   <div class="robot-foreground">
-    <img src="chinni-realistic-avatar.jpg" alt="Chinni AI humanoid">
+    <img src="chinni-realistic-avatar.jpg"
+         alt="Chinni AI humanoid robot">
   </div>
+
   <div class="intro-content">
     <div class="logo">YOUR PERSONAL AI</div>
     <h1>CHINNI AI</h1>
@@ -443,16 +675,24 @@ body {
       Your intelligent AI companion is ready.<br>
       Talk, explore and create with Chinni.
     </p>
-    <button class="start-btn" id="startBtn">✦ Start Chatting</button>
+    <button class="start-btn" id="startBtn">
+      ✦ Start Chatting
+    </button>
   </div>
+
 </section>
 
+<!-- CHAT SCREEN -->
 <section id="chatScreen" class="screen">
+
   <div class="robot-background">
-    <img src="chinni-realistic-avatar.jpg" alt="Chinni background">
+    <img src="chinni-realistic-avatar.jpg"
+         alt="Chinni background robot">
   </div>
+
   <div class="robot-foreground">
-    <img src="chinni-realistic-avatar.jpg" alt="Chinni humanoid avatar">
+    <img src="chinni-realistic-avatar.jpg"
+         alt="Chinni humanoid avatar">
   </div>
 
   <header class="chat-top">
@@ -460,37 +700,64 @@ body {
       <div class="chat-brand">CHINNI AI</div>
       <div class="status">● Online · Gemini AI</div>
     </div>
-    <button class="voice-toggle" id="voiceToggle">🔇 Voice OFF</button>
+
+    <button class="voice-toggle" id="voiceToggle">
+      🔇 Voice OFF
+    </button>
   </header>
 
   <main class="chat-layout">
     <div class="chat-panel">
-      <div class="chat-heading">✨ Chat with Chinni</div>
+
+      <div class="chat-heading">
+        ✨ Chat with Chinni
+      </div>
 
       <div class="messages" id="messages">
         <div class="message bot">
           <span class="message-label">CHINNI</span>
-          <div class="message-bubble">Hi! I'm Chinni. 😊 How can I help you today?</div>
+          <div class="message-bubble">
+            Hi! I'm Chinni. 😊 How can I help you today?
+          </div>
         </div>
       </div>
 
       <div class="quick-prompts">
-        <button class="quick-prompt" data-prompt="Hi Chinni!">👋 Say Hi</button>
-        <button class="quick-prompt" data-prompt="Tell me a joke">😂 Tell a joke</button>
-        <button class="quick-prompt" data-prompt="What can you do?">✨ Your abilities</button>
+        <button class="quick-prompt" data-prompt="Hi Chinni!">
+          👋 Say Hi
+        </button>
+        <button class="quick-prompt" data-prompt="Tell me a joke">
+          😂 Tell a joke
+        </button>
+        <button class="quick-prompt" data-prompt="What can you do?">
+          ✨ Your abilities
+        </button>
       </div>
 
       <div class="composer">
-        <button class="action-btn" id="micBtn" title="Speak">🎙️</button>
-        <input id="messageInput" type="text" placeholder="Message Chinni..." autocomplete="off">
-        <button class="action-btn" id="sendBtn" title="Send">➤</button>
+        <button class="action-btn" id="micBtn"
+                title="Speak">🎙️</button>
+
+        <input id="messageInput"
+               type="text"
+               placeholder="Message Chinni..."
+               autocomplete="off">
+
+        <button class="action-btn" id="sendBtn"
+                title="Send">➤</button>
       </div>
-      <div class="footer-note">Chinni AI 2.0 · Powered by Gemini</div>
+
+      <div class="footer-note">
+        Chinni AI 2.0 · Powered by Gemini
+      </div>
+
     </div>
   </main>
-</section>
 
+</section>
 <script>
+/* ELEMENTS */
+
 const intro = document.getElementById("intro");
 const chatScreen = document.getElementById("chatScreen");
 const startBtn = document.getElementById("startBtn");
@@ -507,15 +774,20 @@ let isReplying = false;
 let isListening = false;
 let voiceEnabled = false;
 
+/* OPEN CHAT */
+
 function openChat() {
   intro.classList.remove("active");
   chatScreen.classList.add("active");
   messageInput.focus();
   scrollMessages();
 }
+
 startBtn.addEventListener("click", openChat);
 
-function addMessage(text,sender) {
+/* ADD MESSAGE */
+
+function addMessage(text, sender) {
   const message = document.createElement("div");
   message.className = "message " + sender;
 
@@ -530,13 +802,18 @@ function addMessage(text,sender) {
   message.appendChild(label);
   message.appendChild(bubble);
   messages.appendChild(message);
+
   scrollMessages();
   return bubble;
 }
 
+/* SCROLL */
+
 function scrollMessages() {
   messages.scrollTop = messages.scrollHeight;
 }
+
+/* TYPING INDICATOR */
 
 function showTyping() {
   const typing = document.createElement("div");
@@ -552,40 +829,58 @@ function hideTyping() {
   if (typing) typing.remove();
 }
 
+/* SEND MESSAGE TO GEMINI */
+
 async function sendMessage(text) {
   text = text.trim();
+
   if (!text || isReplying) return;
 
-  addMessage(text,"user");
+  addMessage(text, "user");
   messageInput.value = "";
+
   isReplying = true;
   sendBtn.disabled = true;
   showTyping();
 
   try {
-    const response = await fetch(BACKEND_URL,{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({message:text})
+    const response = await fetch(BACKEND_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: text
+      })
     });
 
-    if (!response.ok) throw new Error("Server error: " + response.status);
+    if (!response.ok) {
+      throw new Error("Server error: " + response.status);
+    }
 
     const data = await response.json();
-    if (!data.reply) throw new Error("Empty AI response");
+
+    if (!data.reply) {
+      throw new Error("Empty AI response");
+    }
 
     hideTyping();
-    addMessage(data.reply,"bot");
+    addMessage(data.reply, "bot");
 
-    if (voiceEnabled) speakText(data.reply);
+    if (voiceEnabled) {
+      speakText(data.reply);
+    }
 
-  } catch(error) {
+  } catch (error) {
     hideTyping();
+
     addMessage(
       "Sorry! AI connection lo problem vachindi. Please try again.",
       "bot"
     );
-    console.error("Chinni error:",error);
+
+    console.error("Chinni error:", error);
+
   } finally {
     isReplying = false;
     sendBtn.disabled = false;
@@ -593,41 +888,64 @@ async function sendMessage(text) {
   }
 }
 
-sendBtn.addEventListener("click",() => sendMessage(messageInput.value));
+/* SEND BUTTON */
 
-messageInput.addEventListener("keydown",event => {
-  if (event.key === "Enter") sendMessage(messageInput.value);
+sendBtn.addEventListener("click", () => {
+  sendMessage(messageInput.value);
 });
+
+/* ENTER KEY */
+
+messageInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    sendMessage(messageInput.value);
+  }
+});
+
+/* QUICK PROMPTS */
 
 document.querySelectorAll(".quick-prompt").forEach(button => {
-  button.addEventListener("click",() => sendMessage(button.dataset.prompt));
+  button.addEventListener("click", () => {
+    sendMessage(button.dataset.prompt);
+  });
 });
 
-/* OPTIONAL VOICE OUTPUT */
+/* VOICE OUTPUT */
 
-voiceToggle.addEventListener("click",() => {
+voiceToggle.addEventListener("click", () => {
   voiceEnabled = !voiceEnabled;
-  if (!voiceEnabled && "speechSynthesis" in window) speechSynthesis.cancel();
-  voiceToggle.textContent = voiceEnabled ? "🔊 Voice ON" : "🔇 Voice OFF";
+
+  if (!voiceEnabled) {
+    speechSynthesis.cancel();
+  }
+
+  voiceToggle.textContent = voiceEnabled
+    ? "🔊 Voice ON"
+    : "🔇 Voice OFF";
 });
 
 function speakText(text) {
   if (!("speechSynthesis" in window)) return;
 
   speechSynthesis.cancel();
+
   const speech = new SpeechSynthesisUtterance(text);
+
   const isTelugu = /[\u0C00-\u0C7F]/.test(text);
 
   speech.lang = isTelugu ? "te-IN" : "en-IN";
-  speech.rate = .92;
+  speech.rate = 0.92;
   speech.pitch = 1.15;
   speech.volume = 1;
 
   const voices = speechSynthesis.getVoices();
+
   let selectedVoice = null;
 
   if (isTelugu) {
-    selectedVoice = voices.find(v => v.lang.toLowerCase().startsWith("te"));
+    selectedVoice = voices.find(v =>
+      v.lang.toLowerCase().startsWith("te")
+    );
   }
 
   if (!selectedVoice) {
@@ -638,17 +956,23 @@ function speakText(text) {
   }
 
   if (!selectedVoice) {
-    selectedVoice = voices.find(v => v.lang.toLowerCase().startsWith("en-in"));
+    selectedVoice = voices.find(v =>
+      v.lang.toLowerCase().startsWith("en-in")
+    );
   }
 
-  if (selectedVoice) speech.voice = selectedVoice;
+  if (selectedVoice) {
+    speech.voice = selectedVoice;
+  }
+
   speechSynthesis.speak(speech);
 }
 
 /* MICROPHONE INPUT */
 
 const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
 
 let recognition = null;
 
@@ -668,79 +992,111 @@ if (SpeechRecognition) {
     micBtn.textContent = "🎙️";
   };
 
-  recognition.onresult = event => {
-    const transcript = event.results[0][0].transcript;
+  recognition.onresult = (event) => {
+    const transcript =
+      event.results[0][0].transcript;
+
     messageInput.value = transcript;
     sendMessage(transcript);
   };
 
-  recognition.onerror = event => {
-    console.error("Microphone error:",event.error);
+  recognition.onerror = (event) => {
+    console.error("Microphone error:", event.error);
     isListening = false;
     micBtn.textContent = "🎙️";
   };
 }
 
-micBtn.addEventListener("click",() => {
+micBtn.addEventListener("click", () => {
   if (!recognition) {
-    addMessage("Your browser does not support voice recognition. Please use Chrome.","bot");
+    addMessage(
+      "Your browser does not support voice recognition. Please use Chrome.",
+      "bot"
+    );
     return;
   }
-  if (isListening) recognition.stop();
-  else recognition.start();
+
+  if (isListening) {
+    recognition.stop();
+  } else {
+    recognition.start();
+  }
 });
 
-/* STAR PARTICLES */
+/* STAR ANIMATION */
 
 const canvas = document.getElementById("stars");
 const ctx = canvas.getContext("2d");
+
 let stars = [];
 let width = 0;
 let height = 0;
+let animationFrame = 0;
 
 function resizeCanvas() {
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
+
   stars = [];
 
-  const count = Math.min(130,Math.floor(width*height/9000));
+  const count = Math.min(
+    130,
+    Math.floor((width * height) / 9000)
+  );
 
-  for (let i=0;i<count;i++) {
+  for (let i = 0; i < count; i++) {
     stars.push({
-      x:Math.random()*width,
-      y:Math.random()*height,
-      size:Math.random()*1.5+.3,
-      speed:Math.random()*.35+.08,
-      alpha:Math.random()*.7+.2
+      x: Math.random() * width,
+      y: Math.random() * height,
+      size: Math.random() * 1.5 + .3,
+      speed: Math.random() * .35 + .08,
+      alpha: Math.random() * .7 + .2
     });
   }
 }
 
 function animateStars() {
-  ctx.clearRect(0,0,width,height);
+  ctx.clearRect(0, 0, width, height);
 
   stars.forEach(star => {
     star.y -= star.speed;
+
     if (star.y < 0) {
       star.y = height;
-      star.x = Math.random()*width;
+      star.x = Math.random() * width;
     }
+
     ctx.beginPath();
-    ctx.arc(star.x,star.y,star.size,0,Math.PI*2);
-    ctx.fillStyle = `rgba(140,220,255,${star.alpha})`;
+    ctx.arc(
+      star.x,
+      star.y,
+      star.size,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fillStyle =
+      `rgba(140, 220, 255, ${star.alpha})`;
+
     ctx.fill();
   });
 
-  requestAnimationFrame(animateStars);
+  animationFrame = requestAnimationFrame(animateStars);
 }
 
-window.addEventListener("resize",resizeCanvas);
+window.addEventListener("resize", resizeCanvas);
+
 resizeCanvas();
 animateStars();
 
-document.addEventListener("visibilitychange",() => {
-  if (!document.hidden) scrollMessages();
+/* PAGE VISIBILITY */
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    scrollMessages();
+  }
 });
 </script>
+
 </body>
 </html>
